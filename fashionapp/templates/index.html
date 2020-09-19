@@ -1,0 +1,190 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block index %}
+<style>
+    .cart-btn {
+    display: inline-block;
+    font-size: 12px;
+    color: #ffffff;
+    background: #ca1515;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 10px 20px 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.cart-btn:hover{
+    text-decoration:none;
+    color:white;
+}
+a:hover{
+    text-decoration:none;
+}
+.alert{
+    width: 300px;  
+    display: none;
+}
+@media (min-width: 576px){
+    .modal-dialog {
+    max-width: 500px;
+    margin: 1.75rem auto;
+    }
+}
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: .5rem;
+    pointer-events: none;
+}
+</style>
+<!-- CSS only -->
+<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
+
+<div class="alert alert-success fixed-top modal-dialog" role="alert">
+    
+</div>
+<div class="alert alert-danger fixed-top modal-dialog" role="alert">
+    already added to cart
+</div>
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4">
+                <div class="section-title">
+                    <h4>New product</h4>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-8">
+                <ul class="filter__controls">
+                    <li class="active" data-filter="*">All</li>
+                    <li data-filter=".women">Women’s</li>
+                    <li data-filter=".men">Men’s</li>
+                    <li data-filter=".kid">Kid’s</li>
+                    <li data-filter=".accessories">Accessories</li>
+                    <li data-filter=".cosmetic">Cosmetics</li>
+                </ul>
+            </div>
+        </div>
+        <div class="row property__gallery">
+            {% for product in object_list %}
+            <div class="col-lg-3 col-md-4 col-sm-6 mix {{ product.category }}">
+                <div class="product__item">
+                    <div class="product__item__pic set-bg" data-setbg="media/{{ product.mainimage }}">
+                        {% if product.label == 'new' %}
+                        <div class="label new">New</div>
+                        {% elif product.label == 'sale' %}
+                        <div class="label sale">Sale</div>
+                        {% elif product.label == 'out of stock' %}
+                        <div class="label stockout">out of stock</div>
+                        {% endif %}
+                        <ul class="product__hover">
+                            <li><a href="" url="media/{{ product.mainimage }}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                            <li><a href="#"><span class="icon_tag_alt"></span></a></li>
+                        </ul>
+                    </div>
+                    <div class="product__item__text">
+                        <h6><a href="#">{{ product.name }}</a></h6>
+                        <div class="rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                        <div class="product__price">$ {{ product.price }}</div> {% csrf_token %}
+                        <a href="" url="cart/{{ product.slug }}" class="cart-btn" id="btn"><span class="icon_cart_alt"></span> Add to cart</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
+
+<!-- Services Section Begin -->
+<section class="services spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-car"></i>
+                    <h6>Free Transportation</h6>
+                    <p>For all oder over $99</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-money"></i>
+                    <h6>Money Back Guarantee</h6>
+                    <p>If good have Problems</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-support"></i>
+                    <h6>Online Support 24/7</h6>
+                    <p>Dedicated support</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="services__item">
+                    <i class="fa fa-headphones"></i>
+                    <h6>Payment Secure</h6>
+                    <p>100% secure payment</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Services Section End -->
+<script>
+    $(document).on('click', '#btn', function(e){
+        e.preventDefault();
+        var link = $(this).attr('url')
+        $(this).attr('id', 'gone');
+        
+        // console.log(link)
+        $.ajax({
+            type: 'POST',
+            url: link,
+            data:{
+                name: link,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success:function(response){
+                console.log(response.cart_total)
+                $('.alert')[0].innerText = response.message;
+                $('a[href="/shop-cart/"] .tip')[0].innerText = response.cart_total
+                $('.alert-success').show();
+                setTimeout(function() {
+                    $('.alert-success').fadeOut();
+                }, 3500);
+                
+                $('a[href="/shop-cart/"] .tip').each(function(){
+                    $(this)[0].innerText = response.cart_total;
+                });
+            }
+        });
+    });
+    
+    $(document).on('click','#gone', function(e){
+        e.preventDefault();
+        // $('.alert-danger')[0].innerText = response.message;
+            // $('a[href="/shop-cart/"] .tip')[0].innerText = response.cart_total
+            $('.alert-danger').show();
+            setTimeout(function() {
+            $('.alert-danger').fadeOut();
+        }, 3500);
+    });
+</script>
+{% endblock %}
