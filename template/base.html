@@ -49,10 +49,10 @@
                 <div class="tip">2</div>
             </a></li>
             <li><a href="{% url 'fashionapp:shopcart' %}"><span class="icon_cart_alt"></span>
-                <div class="tip"></div>
+                <div class="tip">0</div>
             </a></li>
             <li><a href=""><span class="icon_bag_alt"></span>
-                <div class="tip">2</div>
+                <div class="tip"></div>
             </a></li>
         </ul>
         <div class="offcanvas__logo">
@@ -97,12 +97,12 @@
                             <li><span class="icon_search search-switch"></span></li>
                             <li>
                                 <a href="#"><span class="icon_heart_alt"></span>
-                                    <div class="tip">2</div>
+                                    <div class="tip"></div>
                                 </a>
                             </li>
                             <li>
                                 <a href="{% url 'fashionapp:shopcart' %}"><span class="icon_cart_alt cart_count"></span>
-                                    <div class="tip"></div>
+                                    <div class="tip">0</div>
                                 </a>
                             </li>
                             <li>
@@ -219,22 +219,27 @@
 <!-- Search End -->
 
 <script>
-    $(document).ready(function(){
-        $.ajax({
-            type: 'POST',
-            url: '/fetch_count/',
-            data:{
-                name: 'link',
-                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-            },
-            success:function(response){   
-                                                    
-                $('a[href="/shop-cart/"] .tip').each(function(){
-                    $(this)[0].innerText = response.cart_total;
-                });
-            }
+    if("{{request.user}}" == "AnonymousUser"){
+        
+    }
+    else {
+        $(document).ready(function(){
+            $.ajax({
+                type: 'POST',
+                url: '/fetch_count/',
+                data:{
+                    name: 'link',
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success:function(response){   
+                                                        
+                    $('a[href="/shop-cart/"] .tip').each(function(){
+                        $(this)[0].innerText = response.cart_total;
+                    });
+                }
+            });
         });
-    });
+    }
 </script>
 
 <!-- Js Plugins -->

@@ -30,6 +30,13 @@ class Order(models.Model):
     ordered = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     total = models.FloatField()
-
+ 
     def __str__(self):
         return f'{self.user.username}  ${self.total}'
+        
+
+class Orders(models.Model):
+    items = models.TextField()
+    user = models.CharField(max_length=255)
+    total = models.FloatField()
+    delivered = models.BooleanField(default=False)

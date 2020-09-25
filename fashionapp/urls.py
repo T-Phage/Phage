@@ -1,7 +1,7 @@
 from django.urls import path
 from . views import *
 from . import views
-from cartapp.views import add_to_cart, remove_from_cart, delete_from_cart, count_cart
+from cartapp.views import add_to_cart, remove_from_cart, delete_from_cart, count_cart, orders
 
 app_name = 'fashionapp'
 
@@ -16,6 +16,8 @@ urlpatterns = [
     path('checkout/', views.checkout, name='checkout'),
     path('fetch_count/', count_cart, name='count-cart'),
     path('checkout/ordered/', views.save_ordered),
+    path('samajax/', views.samajax),
+    path('save_orders/', orders),
 ]
 
 

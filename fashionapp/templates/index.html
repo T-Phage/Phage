@@ -86,9 +86,9 @@ a:hover{
                         <div class="label stockout">out of stock</div>
                         {% endif %}
                         <ul class="product__hover">
-                            <li><a href="" url="media/{{ product.mainimage }}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                            <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                            <li><a href="#"><span class="icon_tag_alt"></span></a></li>
+                            <li><a url="media/{{ product.mainimage }}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                            <li><a ><span class="icon_heart_alt"></span></a></li>
+                            <li><a ><span class="icon_tag_alt"></span></a></li>
                         </ul>
                     </div>
                     <div class="product__item__text">
@@ -101,7 +101,7 @@ a:hover{
                             <i class="fa fa-star"></i>
                         </div>
                         <div class="product__price">$ {{ product.price }}</div> {% csrf_token %}
-                        <a href="" url="cart/{{ product.slug }}" class="cart-btn" id="btn"><span class="icon_cart_alt"></span> Add to cart</a>
+                        <a href="" aria-disabled="true" url="cart/{{ product.slug }}" class="cart-btn" id="btn"><span class="icon_cart_alt"></span> Add to cart<span style="display: none;">{{product.id}}</span></a>
                     </div>
                 </div>
             </div>
@@ -148,35 +148,82 @@ a:hover{
 </section>
 <!-- Services Section End -->
 <script>
-    $(document).on('click', '#btn', function(e){
-        e.preventDefault();
-        var link = $(this).attr('url')
-        $(this).attr('id', 'gone');
-        
-        // console.log(link)
-        $.ajax({
-            type: 'POST',
-            url: link,
-            data:{
-                name: link,
-                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-            },
-            success:function(response){
-                console.log(response.cart_total)
-                $('.alert')[0].innerText = response.message;
-                $('a[href="/shop-cart/"] .tip')[0].innerText = response.cart_total
-                $('.alert-success').show();
-                setTimeout(function() {
-                    $('.alert-success').fadeOut();
-                }, 3500);
-                
-                $('a[href="/shop-cart/"] .tip').each(function(){
-                    $(this)[0].innerText = response.cart_total;
-                });
-            }
+sessionStorage.clear()
+    console.log(localStorage.length)
+    if("{{request.user}}" == "AnonymousUser"){
+        $(document).on('click', '#btn', function(e){
+            e.preventDefault();
+            $(this).attr('id', 'gone')
+            
+            var tr = $(this).parent()
+            tr = tr.parent();
+            var img = tr[0].children[0].attributes[1].nodeValue
+            var product = tr[0].children[1].children[0].children[0].innerText;
+            var price = tr[0].children[1].children[2].innerText;
+            var price = price.substring(1)
+            var id = $(this)[0].children[1].innerText;
+            
+            var num = sessionStorage.length
+            num = num+1
+            sessionStorage.setItem( "cart_"+num, id)
+            
+            // $.ajax({
+            //     type: 'POST',
+            //     url: '/shop-cart/',
+            //     data: {
+            //         id: id,
+            //         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            //     },
+            //     success:function(response){
+                    
+            //     }
+            // });
+            cart = {
+                id: id,
+                img: img,
+                product: product,
+                price: price,
+                qty: 1
+            };
+            var jsonStr = JSON.stringify( cart );
+            sessionStorage.setItem( "cart_"+num, jsonStr );
+            
+            // // now the cart is {"item":"Product 1","price":35.50,"qty":2}
+            var cartValue = sessionStorage.getItem( "cart_"+num );
+            var cartObj = JSON.parse( cartValue );
+            console.log(cartObj)
+            // // original object
         });
-    });
-    
+    }else{
+        $(document).on('click', '#btn', function(e){
+            e.preventDefault();
+            var link = $(this).attr('url')
+            $(this).attr('id', 'gone');
+            
+            // console.log(link)
+            $.ajax({
+                type: 'POST',
+                url: link,
+                data:{
+                    name: link,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success:function(response){
+                    console.log(response.cart_total)
+                    $('.alert')[0].innerText = response.message;
+                    $('a[href="/shop-cart/"] .tip')[0].innerText = response.cart_total
+                    $('.alert-success').show();
+                    setTimeout(function() {
+                        $('.alert-success').fadeOut();
+                    }, 3500);
+                    
+                    $('a[href="/shop-cart/"] .tip').each(function(){
+                        $(this)[0].innerText = response.cart_total;
+                    });
+                }
+            });
+        }); 
+    }
     $(document).on('click','#gone', function(e){
         e.preventDefault();
         // $('.alert-danger')[0].innerText = response.message;

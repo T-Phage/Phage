@@ -16,18 +16,51 @@ class ShopCart(ListView):
     # model = Order
     model = Cart
     template_name = 'shop-cart.html'
+    
 
+def convert_list_to_string(org_list, seperator=' '):
+    """ Convert list to string, by joining all item in list with given separator.
+        Returns the concatenated string """
+    return seperator.join(org_list)
 
+ids = []
 def shopcart(request):
-    orders = Order.objects.filter(ordered=False,)
-    carts =  Cart.objects.filter(user=request.user)
-    total_orders = Order.objects.filter(ordered=False, user=request.user)
-    if total_orders.exists():
-        total_orders = total_orders[0].total  
-    else:
-        total_orders = 0
-    context = {'carts': carts, 'orders': orders, 'total_orders':total_orders,}
-    return render(request, 'shop-cart.html', context)
+    if request.is_ajax:
+        
+        id = request.POST.get('id', False)
+        ids.append(id)
+        
+        print(id)
+        print(ids)
+        # full_str = convert_list_to_string(ids, ' or')
+        full_str = ''.join([str(elem) for elem in ids])
+        print(full_str)
+        # print(Product.objects.filter(id=)
+        # print("df")
+        # name = request.POST['name']
+        # print(name)
+        # numbers = request.POST['number']
+        # print(numbers)
+
+    products = Product.objects.all()
+    # orders = Order.objects.filter(ordered=False,)
+    # carts =  Cart.objects.filter(user=request.user)
+    # total_orders = Order.objects.filter(ordered=False, user=request.user)
+    # if total_orders.exists():
+    #     total_orders = total_orders[0].total  
+    # else:
+    #     total_orders = 0
+    # context = {'carts': carts, 'orders': orders, 'total_orders':total_orders,}
+    return render(request, 'shop-cart.html', {'products':products})
+
+
+def samajax(request):
+    print("df")
+    name = request.POST['name']
+    print(name)
+    numbers = request.POST['number']
+    print(numbers[0][1])
+
 
 
 def contact(request):

@@ -1,0 +1,106 @@
+{% extends 'adminbase.html' %}
+{% load static %}
+{% block ordertable %}
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link not_delivered active" href="#">Pending Delivery</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link delivered" href="#">Orders delivered</a>
+    </li>
+</ul>
+<div class="table-responsive">
+    <table class="table v-middle">
+        <thead>
+            <tr class="bg-light">
+                <th class="border-top-0">Order</th>
+                <th class="border-top-0">User</th>
+                <th class="border-top-0">Delivered</th>
+                <th class="border-top-0">Total</th>
+                <!-- <th class="border-top-0">Quantity</th>
+                <th class="border-top-0">Stock</th>
+                <th class="border-top-0">Total</th> -->
+            </tr>
+        </thead>
+        <tbody id="delivered">
+            {% for order in orders %}
+            
+            {% if order.delivered == True %}
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div class="m-r-10"><a class="btn btn-circle btn-info text-white text-uppercase">{{product.name|slice:":2"}}</a></div>
+                        <div class="">
+                            <h4 class="font-14">{{order.items}}</h4>
+                        </div>
+                    </div>
+                </td>
+                <td>{{order.user}}</td>
+                <td>{{order.delivered}}</td>
+                <!-- <td>
+                    <label class="label label-danger">{{product.size}}</label>
+                </td> -->
+                <td>${{order.total}}</td>
+                <!-- <td>{{product.stock}}</td> -->
+                <!-- <td>
+                    <h5 class="m-b-0">$<script>document.write(parseFloat("{{product.price}}") * parseInt("{{product.quantity}}"))</script></h5>
+                </td> -->
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+        
+        <tbody id="not_delivered">
+            {% for order in orders %}
+            
+            {% if order.delivered == False %}
+            <tr>
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div class="m-r-10"><a class="btn btn-circle btn-info text-white text-uppercase">{{product.name|slice:":2"}}</a></div>
+                        <div class="">
+                            <h4 class="font-14">{{order.items}}</h4>
+                        </div>
+                    </div>
+                </td>
+                <td>{{order.user}}</td>
+                <td>{{order.delivered}}</td>
+                <!-- <td>
+                    <label class="label label-danger">{{product.size}}</label>
+                </td> -->
+                <td>${{order.total}}</td>
+                <!-- <td>{{product.stock}}</td> -->
+                <!-- <td>
+                    <h5 class="m-b-0">$<script>document.write(parseFloat("{{product.price}}") * parseInt("{{product.quantity}}"))</script></h5>
+                </td> -->
+            </tr>
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $('#delivered').hide();
+    $('tbody tr td div .font-14').each(function (){
+        var txt = $(this)[0].innerText
+        var txt = txt.replace(/, /gi, "\n")
+       console.log(txt) 
+       $(this)[0].innerText = txt;
+    });
+    
+    $('.not_delivered').on('click', function(){
+        $(this).attr('class', 'nav-link active not_delivered')
+        $('.delivered').attr('class', 'nav-link delivered')
+        $('#delivered').fadeOut();
+        $('#not_delivered').fadeIn();
+    });
+    
+    $('.delivered').on('click', function(){
+        $(this).attr('class', 'nav-link active delivered')
+        $('.not_delivered').attr('class', 'nav-link not_delivered')
+        $('#not_delivered').fadeOut();
+        $('#delivered').fadeIn();
+    });
+</script>
+{% endblock %}

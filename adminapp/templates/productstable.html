@@ -1,0 +1,40 @@
+{% extends 'adminbase.html' %}
+{% load static %}
+{% block products %}
+<table class="table table-bordered table-responsive-lg">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product</th>
+            <th scope="col">Price</th>
+            <th scope="col">Category</th>
+            <th scope="col">size</th>
+            <th scope="col">Stock</th>
+            <th scope="col">Total sale</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in object_list %}
+        <tr>
+            <th scope="row">1</th>
+            <td>{{product.name}}</td>
+            <td>${{product.price}}</td>
+            <td>{{product.category}}</td>
+            <td>{{product.size}}</td>
+            <td>{{product.stock}}</td>
+            <td>$<script>document.write(parseFloat("{{product.price}}") * parseInt("{{product.quantity}}"))</script></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+   
+    var num = 0;
+    
+    $('tbody tr th').each(function(){
+        num = num+1
+        $(this)[0].innerText = num;
+    });
+    console.log();
+</script>
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse
 from fashionapp.models import Product
-from .models import Cart, Order
+from .models import Cart, Order, Orders
 from django.contrib import messages
 from django.http import JsonResponse
 
@@ -235,3 +235,23 @@ def delete_from_cart(request, slug):
     #             'message': "This item was added to your orders."
     #         }
     #     return JsonResponse(data)
+
+
+def orders(request):
+    orders = request.POST['order']
+    total = request.POST['total']
+    print(orders)
+    Orders.objects.create(
+        items=orders,
+        user="sammy",
+        total=total,
+        delivered=True)
+    data = {
+        'message': 'ok',
+    }
+    return JsonResponse(data)
+
+# items = models.TextField()
+#     user = models.CharField(max_length=255)
+#     total = models.FloatField()
+#     delivered = models.BooleanField(default=False)
