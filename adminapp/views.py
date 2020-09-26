@@ -1,8 +1,9 @@
 from django.views.generic import ListView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from fashionapp.models import Product
 from cartapp.models import Order, Orders
 from django.db.models import Sum
+from .forms import ProductForm
 
 # Create your views here.
 def dashboard(request):
@@ -28,7 +29,6 @@ class Products(ListView):
 #     template_name = 'ordertable.html'
     
 
-    
 def OrderTable(request):
     orders = Orders.objects.all()
     context = {'orders':orders}
@@ -37,3 +37,14 @@ def OrderTable(request):
 
 def profile(request):
     return render(request, 'adminprofile.html')
+
+
+def add_product(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        form.save()
+        return redirect('adminapp:add_product')
+    form = ProductForm()
+    context = {'form':form}
+    return render(request, 'addproduct.html', context)
+    

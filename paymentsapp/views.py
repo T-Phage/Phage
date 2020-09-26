@@ -11,3 +11,7 @@ class HomePageView(TemplateView):
     #     context = super().get_context_data(**kwargs)
     #     context['key'] = settings.RAVE_PUBLIC_KEY
     #     return context
+    
+
+def success(request):
+    return render(request, 'success.html')

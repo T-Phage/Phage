@@ -1,6 +1,10 @@
 {% extends 'adminbase.html' %}
+{% url 'adminapp:add_product' as add_product %}
+{% url 'adminapp:products' as all_product %}
 {% load static %}
+
 {% block products %}
+
 <table class="table table-bordered table-responsive-lg">
     <thead>
         <tr>
@@ -18,11 +22,11 @@
         <tr>
             <th scope="row">1</th>
             <td>{{product.name}}</td>
-            <td>${{product.price}}</td>
+            <td>GH₵ {{product.price}}</td>
             <td>{{product.category}}</td>
             <td>{{product.size}}</td>
             <td>{{product.stock}}</td>
-            <td>$<script>document.write(parseFloat("{{product.price}}") * parseInt("{{product.quantity}}"))</script></td>
+            <td>GH₵ <script>document.write(parseFloat("{{product.price}}") * parseInt("{{product.quantity}}"))</script></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -37,4 +41,5 @@
     });
     console.log();
 </script>
+
 {% endblock %}

@@ -20,39 +20,10 @@
 a:hover{
     text-decoration:none;
 }
-.alert{
-    width: 300px;  
-    display: none;
-}
-@media (min-width: 576px){
-    .modal-dialog {
-    max-width: 500px;
-    margin: 1.75rem auto;
-    }
-}
-.fixed-top {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1030;
-}
-.modal-dialog {
-    position: relative;
-    width: auto;
-    margin: .5rem;
-    pointer-events: none;
-}
+
 </style>
 <!-- CSS only -->
-<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
 
-<div class="alert alert-success fixed-top modal-dialog" role="alert">
-    
-</div>
-<div class="alert alert-danger fixed-top modal-dialog" role="alert">
-    already added to cart
-</div>
 <!-- Product Section Begin -->
 <section class="product spad">
     <div class="container">
@@ -148,8 +119,7 @@ a:hover{
 </section>
 <!-- Services Section End -->
 <script>
-sessionStorage.clear()
-    console.log(localStorage.length)
+
     if("{{request.user}}" == "AnonymousUser"){
         $(document).on('click', '#btn', function(e){
             e.preventDefault();

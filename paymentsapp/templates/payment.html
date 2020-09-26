@@ -12,16 +12,16 @@
         currency: "GHS",
         country: "GH",
         payment_options: "card, mobilemoneyghana, ussd",
-        redirect_url: // specified redirect URL
-          "https://callbacks.piedpiper.com/flutterwave.aspx?ismobile=34",
+        redirect_url: "{% url 'paymentsapp:success' %}", // specified redirect URL
+          // "https://callbacks.piedpiper.com/flutterwave.aspx?ismobile=34",
         meta: {
           consumer_id: 23,
           consumer_mac: "92a3-912ba-1192a",
         },
         customer: {
-          email: "user@gmail.com",
+          email: "samuelgyamfi824@gmail.com",
           phone_number: "08102909304",
-          name: "yemi desola",
+          name: "Samuel Gyamfi",
         },
         callback: function (data) {
           console.log(data);

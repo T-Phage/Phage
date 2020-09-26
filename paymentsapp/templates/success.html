@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block success %}
+<div style="height: 50px;"></div>
+<div class="container" >
+    <div class="">
+        <h1>Payment Successfull</h1>
+        
+        <h6>Click to continue shopping <a href="{% url 'fashionapp:index' %}">Home</a></h6>
+    </div>
+</div>
+<div style="height: 50px;"></div>
+{% endblock %}

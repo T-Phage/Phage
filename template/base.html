@@ -16,6 +16,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ashion | Template</title>
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
@@ -31,14 +33,58 @@
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
+    
+    
 </head>
+<style>
+.alert{
+    width: 300px;  
+    display: none;
+}
+@media (min-width: 576px){
+    .modal-dialog {
+    max-width: 500px;
+    margin: 1.75rem auto;
+    }
+}
+.fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+}
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: .5rem;
+    pointer-events: none;
+}
+.alert{
+    width: 300px;  
+    display: none;
+}
+@media (min-width: 576px){
+    .modal-dialog {
+    max-width: 500px;
+    margin: 1.75rem auto;
+    }
+}
 
+</style>
 <body>
+    <div class="alert alert-success fixed-top modal-dialog" role="alert">
+    
+    </div>
+    <div class="alert alert-danger fixed-top modal-dialog" role="alert">
+        already added to cart
+    </div>
+    
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
     </div>
-
+    
     <!-- Offcanvas Menu Begin -->
     <div class="offcanvas-menu-overlay"></div>
     <div class="offcanvas-menu-wrapper">
@@ -60,7 +106,7 @@
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
-            <a href="#">Login</a>
+            <a href="{% url 'accounts:login' %}">Login</a>
             <a href="{% url 'accounts:register' %}">Register</a>
         </div>
     </div>
@@ -90,7 +136,7 @@
                 <div class="col-lg-3">
                     <div class="header__right">
                         <div class="header__right__auth">
-                            <a href="#">Login</a>
+                            <a href="{% url 'accounts:login' %}">Login</a>
                             <a href="{% url 'accounts:register' %}">Register</a>
                         </div>
                         <ul class="header__right__widget">
@@ -135,9 +181,12 @@
 
     {% block checkout %}
     {% endblock %}
+    
+    {% block success %}
+    {% endblock %}
 
     <!-- Footer Section Begin -->
-<footer class="footer">
+<footer class="footer" >
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-7">
@@ -146,12 +195,17 @@
                         <a href="{% url 'fashionapp:index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
                     </div>
                     <p>We only accept payments from these transactions</p>
-                    <div class="footer__payment">
-                        <a href="#"><img src="{% static 'img/payment/payment-1.png' %}" alt=""></a>
-                        <a href="#"><img src="{% static 'img/payment/payment-2.png' %}" alt=""></a>
-                        <a href="#"><img src="{% static 'img/payment/payment-3.png' %}" alt=""></a>
-                        <a href="#"><img src="{% static 'img/payment/payment-4.png' %}" alt=""></a>
-                        <a href="#"><img src="{% static 'img/payment/payment-5.png' %}" alt=""></a>
+                    <div class="row">
+                        <div class="footer__payment">
+                            <a class="col-lg-2 col-md-5 col-sm-6" href="#"><img src="{% static 'img/payment/payment-1.png' %}" alt=""></a>
+                            <a class="col-lg-2 col-md-5 col-sm-6" href="#"><img src="{% static 'img/payment/payment-2.png' %}" alt=""></a>
+                            <a class="col-lg-2 col-md-5 col-sm-6" href="#"><img src="{% static 'img/payment/payment-3.png' %}" alt=""></a>
+                            <!-- <a href="#"><img src="{% static 'img/payment/payment-4.png' %}" alt=""></a> -->
+                            <!-- <a href="#"><img src="{% static 'img/payment/payment-5.png' %}" alt=""></a> -->
+                            
+                            <a class="col-lg-5 col-md-7 col-sm-8" href="#"><img src="https://cdn.modernghana.com/thumb/XGltYWdlc1xjb250ZW50XDExMjgyMDE5MTAzNjI1LWk0MXAyNjZnZmEtbW9tby5qcGd8OTkwfDkvMjcvMjAyMA==.jpg" alt=""></a>
+                            
+                        </div>
                     </div>
                 </div>
             </div>
@@ -159,21 +213,22 @@
                 <div class="footer__widget">
                     <h6>Quick links</h6>
                     <ul>
+                        <li><a href="{% url 'accounts:login' %}">My Account</a></li>
                         <li><a href="">About</a></li>
                         <li><a href="">Blogs</a></li>
-                        <li><a href="">Contact</a></li>
-                        <li><a href="" aria-disabled="true">FAQ</a></li>
+                        <li><a href="{% url 'fashionapp:contact' %}">Contact</a></li>
+                        <!-- <li><a href="" aria-disabled="true">FAQ</a></li> -->
                     </ul>
                 </div>
             </div>
             <div class="col-lg-2 col-md-3 col-sm-4">
                 <div class="footer__widget">
-                    <h6>Account</h6>
+                    <!-- <h6>Account</h6> -->
                     <ul>
-                        <li><a href="">My Account</a></li>
-                        <li><a href="">Orders Tracking</a></li>
-                        <li><a href="">Checkout</a></li>
-                        <li><a href="">Wishlist</a></li>
+                        <!-- <li><a href="{% url 'accounts:login' %}">My Account</a></li> -->
+                        <!-- <li><a href="">Orders Tracking</a></li> -->
+                        <!-- <li><a href="">Checkout</a></li> -->
+                        <!-- <li><a href="">Wishlist</a></li> -->
                     </ul>
                 </div>
             </div>
