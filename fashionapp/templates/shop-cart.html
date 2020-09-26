@@ -101,7 +101,7 @@
                             <li class="total">Total <span>$ {{total_orders}}</span></li>
                         </ul>
                         <!-- href="{% url 'fashionapp:checkout' %}" -->
-                        <a class="primary-btn checkout">Proceed to checkout</a>
+                        <a href="{% url 'fashionapp:checkout' %}" class="primary-btn checkout">Proceed to checkout</a>
                     </div>
                 </div>
             </div>
@@ -110,9 +110,6 @@
     <!-- Shop Cart Section End -->
     
 <script> 
-    
-    
-    
     
     if("{{request.user}}" == "AnonymousUser"){
         
@@ -128,14 +125,17 @@
                 $(this)[0].children[3].children[0].innerText = t;
             });
             
-            var li = $('tbody tr:last').index()+1
             var num = []
-            for(var i=1; i<li; i++){
-                var str = $('tbody tr:nth-child('+i+') .cart__total')[0].innerText
-                var str = str.substring(1)
-                var str = parseFloat(str)
-                num.push(str)
-            }
+            
+            $('tbody tr .cart__total').each(function(){
+                var total = $(this)[0].innerText
+                var total = total.substring(3)
+                // console.log(total)
+                num.push(parseFloat(total))
+
+            });
+            
+            // console.log(num)
             var sum = 0;
     
             for(var i=0; i < num.length; i++){
@@ -143,19 +143,30 @@
                 sum += parseFloat(num[i]);
     
             }
-    
-            $('.subtotal span')[0].innerText = "$" + sum
-            $('.total span')[0].innerText = "$" + sum
+            // console.log(sum)
+            $('.subtotal span')[0].innerText = "GH₵" + sum
+            $('.total span')[0].innerText = "GH₵" + sum
+            
+            localStorage.setItem("total", sum)
         }
         
         
         $(document).on('click', '.icon_close', function(e){
+            // shopCalc();
             e.preventDefault();
-            
+           
             var link = $(this).attr('url');
             var a = $(this).parent();
             var td = a.parent();
             var tr = td.parent();
+            var cart_total = tr[0].children[3].children[0].innerText
+            
+            var l_total = localStorage.getItem("total")
+            var total = l_total - cart_total
+            
+            localStorage.setItem("total", total)
+            
+            // console.log(total)
             var tr_id = tr.attr('id')
             var cart = tr.attr('cart')
             // var quantity = tr[0].children[2].children[0].children[1].value
@@ -165,7 +176,9 @@
                 if (key === cart) {
                     sessionStorage.removeItem(key);
                 }
-            }            
+            }          
+            
+            // var total = localStorage.getItem("total", sum)
         });
         
         $(document).on('click', '.dec', function(){
@@ -176,7 +189,8 @@
             
             var q_value = $(this)[0].nextSibling.nextSibling.value
             var cart = tr.attr('cart')
-            console.log(cart)
+            // console.log(cart)
+            
             if (q_value == 0){
                 tr.remove()
                 for(var key in sessionStorage){
@@ -185,40 +199,76 @@
                     }
                 }
             }
-            console.log()
+            
+            for (var key in sessionStorage) {
+                if (key === cart) {
+                    var cartValue = sessionStorage.getItem(key);
+                    var cartObj = JSON.parse( cartValue );
+                    cartObj.qty = parseInt(cartObj.qty) - 1
+                    sessionStorage.setItem(cart, JSON.stringify(cartObj))
+                    // console.log(cartValue) 
+                }
+            }
         });
+        
         $(document).on('click', '.inc', function(){
             shopCalc();
+            
+            var tr = $(this).parent() 
+            var tr = tr.parent()
+            var tr = tr.parent()
+            var q_value = $(this)[0].previousSibling.value
+            var cart = tr.attr('cart')
+            
+            for (var key in sessionStorage) {
+                if (key === cart) {
+                    var cartValue = sessionStorage.getItem(key);
+                    var cartObj = JSON.parse( cartValue );
+                    cartObj.qty = parseInt(cartObj.qty) + 1
+                    sessionStorage.setItem(cart, JSON.stringify(cartObj))
+                    // console.log(cartValue) 
+                }
+            }
         });
         
         $(document).on('click', '.checkout', function(e){
-            e.preventDefault();
-            var arry = []
-            var total = $('.total span')[0].innerText
-            var total = total.substring(1)
-            var li = $('tbody tr:last').index() + 1
-            for(var i=1; i<=li; i++){
-                var p_name = $('tbody tr:nth-child('+i+') .cart__product__item__title h6')[0].innerText
-                var p_quantity = $('tbody tr:nth-child('+i+') .cart__quantity input').val()
-                var order = p_quantity +" of "+ p_name
-                arry.push(order)
-                    
-            }
-            console.log(arry)
-            orders = arry.join(', ')
-            
-            $.ajax({
-                type: 'POST',
-                url: '/save_orders/',
-                data: {
-                    order: orders,
-                    total: total,
-                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-                },
-                success:function(response){
-                    console.log(response.message)
-                }
-            });
+            shopCalc()
+            // e.preventDefault();
+            // var arry = []
+            // var total = $('.total span')[0].innerText
+            // var total = total.substring(1)
+            // var li = $('tbody tr:last').index() + 1
+            // for(var i=1; i<=li; i++){
+            //     var p_name = $('tbody tr:nth-child('+i+') .cart__product__item__title h6')[0].innerText
+            //     var p_quantity = $('tbody tr:nth-child('+i+') .cart__quantity input').val()
+            //     var order = p_quantity +" of "+ p_name
+            //     arry.push(order)     
+            // }
+            // arry.push($('.total span')[0].innerText )
+            // console.log(arry)
+            // orders = arry.join(', ')
+            // localStorage.setItem('arry', JSON.stringify(arry))
+            // for (var key in sessionStorage) {
+            //     if (key === cart) {
+            //         var cartValue = sessionStorage.getItem(key);
+            //         var cartObj = JSON.parse( cartValue );
+            //         cartObj.qty = parseInt(cartObj.qty) + 1
+            //         sessionStorage.setItem(cart, JSON.stringify(cartObj))
+            //         // console.log(cartValue) 
+            //     }
+            // }
+            // $.ajax({
+            //     type: 'POST',
+            //     url: '/save_orders/',
+            //     data: {
+            //         order: orders,
+            //         total: total,
+            //         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            //     },
+            //     success:function(response){
+            //         console.log(response.message)
+            //     }
+            // });
             
         });
         
@@ -241,7 +291,7 @@
                                             </div>\
                                         </div>\
                                     </td>\
-                                    <td class="cart__price">$<span>'+cartObj.price+'</span></td>\
+                                    <td class="cart__price">GH₵<span>'+cartObj.price+'</span></td>\
                                     <td class="cart__quantity">\
                                         <div class="pro-qty">\
                                             <span url="/cart/remove/{{ cart.item.slug }}" class="dec qtybtn">-</span>\
@@ -249,42 +299,11 @@
                                             <span url="/cart/{{ cart.item.slug }}" class="inc qtybtn">+</span>\
                                         </div>\
                                     </td>\
-                                    <td class="cart__total">$ <span>'+(cartObj.price*cartObj.qty)+'</span></td>{% csrf_token %}\
+                                    <td class="cart__total">GH₵ <span>'+(cartObj.price*cartObj.qty)+'</span></td>{% csrf_token %}\
                                     <td class="cart__close"><a ><span class="icon_close"></span></a></td>\
                                 </tr>')
         }
         shopCalc();
-        // console.log(Object.values(localStorage).length)
-        // for (var i=1; i<=Object.values(localStorage).length; i++){
-        //     var cartValue = localStorage.getItem( "cart_"+i );
-        //     var cartObj = JSON.parse( cartValue );
-        //     console.log(cartObj)
-        //     $('tbody').append('<tr id="'+cartObj.id+'" cart="cart_'+i+'">\
-        //                             <td class="cart__product__item">\
-        //                                 <img src="/'+cartObj.img+'" alt="image">\
-        //                                 <div class="cart__product__item__title">\
-        //                                     <h6>'+cartObj.product+'</h6>\
-        //                                     <div class="rating">\
-        //                                         <i class="fa fa-star"></i>\
-        //                                         <i class="fa fa-star"></i>\
-        //                                         <i class="fa fa-star"></i>\
-        //                                         <i class="fa fa-star"></i>\
-        //                                         <i class="fa fa-star"></i>\
-        //                                     </div>\
-        //                                 </div>\
-        //                             </td>\
-        //                             <td class="cart__price">$<span>'+cartObj.price+'</span></td>\
-        //                             <td class="cart__quantity">\
-        //                                 <div class="pro-qty">\
-        //                                     <span url="/cart/remove/{{ cart.item.slug }}" class="dec qtybtn">-</span>\
-        //                                     <input type="text"  min="1" value="'+cartObj.qty+'">\
-        //                                     <span url="/cart/{{ cart.item.slug }}" class="inc qtybtn">+</span>\
-        //                                 </div>\
-        //                             </td>\
-        //                             <td class="cart__total">$ <span>'+(cartObj.price*cartObj.qty)+'</span></td>{% csrf_token %}\
-        //                             <td class="cart__close"><a ><span class="icon_close"></span></a></td>\
-        //                         </tr>')
-        // }
         
     }else{
         $(document).on('click', '.dec', function(e){
@@ -321,13 +340,6 @@
                 success:function(response){
                     $('ul .subtotal span')[0].innerText = "$ " + response.price_total
                     $('ul .total span')[0].innerText = "$ " + response.price_total
-                    // console.log(response.data);
-                    // $('tbody tr').each(function(){
-                    //     if($(this).attr('url', link)){
-                    //         $(this)[0].children[3].children[0].innerText = response.cart_total
-                    //     }
-                    //     return;
-                    // });
                 }
             });
         });

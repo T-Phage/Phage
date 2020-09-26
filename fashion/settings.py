@@ -136,3 +136,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# # Rave
+# RAVE_PUBLIC_KEY = 'FLWPUBK-49dd7ad2eadcee96de327740bc8da0a3-X'
+# RAVE_SECRET_KEY = 'FLWSECK-fcbef636ce3e47c530aa795b697853dc-X'

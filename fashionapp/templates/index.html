@@ -100,7 +100,7 @@ a:hover{
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                         </div>
-                        <div class="product__price">$ {{ product.price }}</div> {% csrf_token %}
+                        <div class="product__price">GH₵ {{ product.price }}</div> {% csrf_token %}
                         <a href="" aria-disabled="true" url="cart/{{ product.slug }}" class="cart-btn" id="btn"><span class="icon_cart_alt"></span> Add to cart<span style="display: none;">{{product.id}}</span></a>
                     </div>
                 </div>
@@ -160,7 +160,7 @@ sessionStorage.clear()
             var img = tr[0].children[0].attributes[1].nodeValue
             var product = tr[0].children[1].children[0].children[0].innerText;
             var price = tr[0].children[1].children[2].innerText;
-            var price = price.substring(1)
+            var price = price.substring(3)
             var id = $(this)[0].children[1].innerText;
             
             var num = sessionStorage.length

@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block checkout %}
+<script src="https://checkout.flutterwave.com/v3.js"></script>
     <!-- Breadcrumb Begin -->
     <div class="breadcrumb-option">
         <div class="container">
@@ -33,19 +34,19 @@
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>First Name <span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" id="firstname">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>Last Name <span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" id="lastname">
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="checkout__form__input">
                                     <p>Country <span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" id="country">
                                 </div>
                                 <div class="checkout__form__input">
                                     <p>Address <span>*</span></p>
@@ -68,13 +69,13 @@
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>Phone <span>*</span></p>
-                                    <input type="text">
+                                    <input type="text" id="phone">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>Email <span>*</span></p>
-                                    <input type="text">
+                                    <input type="email" id="email">
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -93,15 +94,14 @@
                                     </div>
                                     <div class="checkout__form__checkbox">
                                         <label for="note">
-                                            Note about your order, e.g, special noe for delivery
+                                            Note about your order, e.g, special note for delivery
                                             <input type="checkbox" id="note">
                                             <span class="checkmark"></span>
                                         </label>
                                     </div>
                                     <div class="checkout__form__input">
                                         <p>Oder notes <span>*</span></p>
-                                        <input type="text"
-                                        placeholder="Note about your order, e.g, special noe for delivery">
+                                        <input type="text" placeholder="Note about your order, e.g, special noe for delivery">
                                     </div>
                                 </div>
                             </div>
@@ -115,13 +115,11 @@
                                             <span class="top__text">Product</span>
                                             <span class="top__text__right">Total</span>
                                         </li>
-                                        {% for cart in carts %}
-                                        {% for order in orders %}
-                                        {% if cart.user == order.user %}
-                                        <li>{{cart}}<span>$ <script>document.write(parseInt("{{cart.quantity}}") * parseFloat("{{cart.item.price}}"))</script></span></li>
-                                        {% endif %}
-                                        {% endfor %}
-                                        {% endfor %}
+                                    </ul>
+                                    <ul id="orders">
+                                        
+                                        <!-- <li>{{cart}}<span>$ <script>document.write(parseInt("{{cart.quantity}}") * parseFloat("{{cart.item.price}}"))</script></span></li> -->
+                                        
                                         <!-- <li>01. Chain buck bag <span>$ 300.0</span></li>
                                         <li>02. Zip-pockets pebbled<br /> tote briefcase <span>$ 170.0</span></li>
                                         <li>03. Black jean <span>$ 170.0</span></li>
@@ -130,8 +128,8 @@
                                 </div>
                                 <div class="checkout__order__total">
                                     <ul>
-                                        <li>Subtotal <span>$ {{total_orders.total}}</span></li>
-                                        <li>Total <span>$ {{total_orders.total}}</span></li>
+                                        <li>Subtotal <span>GH₵ <span></span>{{total_orders.total}}</span></li>
+                                        <li>Total <span>GH₵ <span></span>{{total_orders.total}}</span></li>
                                     </ul>
                                 </div>
                                 <div class="checkout__order__widget">
@@ -142,7 +140,7 @@
                                     </label>
                                     <p>Create am acount by entering the information below. If you are a returing customer
                                     login at the top of the page.</p>
-                                    <label for="check-payment">
+                                    <!-- <label for="check-payment">
                                         Cheque payment
                                         <input type="checkbox" id="check-payment">
                                         <span class="checkmark"></span>
@@ -150,10 +148,10 @@
                                     <label for="paypal">
                                         PayPal
                                         <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span>
+                                        <span class="checkmark"></span> -->
                                     </label>
                                 </div>
-                                <a href="/checkout/ordered/" class="site-btn">Place oder</a>
+                                <a  href="/checkout/ordered/" class="site-btn">Place oder</a>
                             </div>
                         </div>
                     </div>
@@ -162,4 +160,68 @@
         </section>
         <!-- Checkout Section End -->
         
+<script>
+    
+    var cartValue = localStorage.getItem("total");
+    var cartObj = JSON.parse( cartValue );
+    
+    $('.checkout__order__total ul li span span')[0].innerText = cartValue;
+    $('.checkout__order__total ul li span span')[1].innerText = cartValue;
+    
+    
+    $('.site-btn').on('click', function(e){
+        e.preventDefault()
+        var username = $('#firstname').val() +" "+ $('#lastname').val()
+        var email = $('#email').val()
+        var phone = $('#phone').val()
+        var country = $('#country').val()
+        var total = $('.checkout__order__total ul li span span')[1].innerText
+        
+        function makePayment() {
+            FlutterwaveCheckout({
+            public_key: "FLWPUBK-66106623098f258c4726fa3ea93bcf8e-X",
+            tx_ref: "hooli-tx-1920bbtyt",
+            amount: total,
+            currency: "GHS",
+            country: "GH",
+            payment_options: "card, mobilemoneyghana, ussd",
+            redirect_url: // specified redirect URL
+            "",
+            meta: {
+            consumer_id: 23,
+            consumer_mac: "92a3-912ba-1192a",
+            },
+            customer: {
+            email: email,
+            phone_number: phone,
+            name: username,
+            country: country,
+            },
+            callback: function (data) {
+            console.log(data);
+            },
+            onclose: function() {
+            // close modal
+            },
+            customizations: {
+            title: "My store",
+            description: "Payment for items in cart",
+            logo: "https://assets.piedpiper.com/logo.png",
+        },
+      });
+    }
+    makePayment()
+    });
+    
+    
+    for (var key in sessionStorage) {
+        var cartValue = sessionStorage.getItem(key);
+        var cartObj = JSON.parse( cartValue );
+        // console.log(cartValue)
+        $('#orders').append('<li>'+cartObj.qty+' '+cartObj.product+'<span>GH₵ '+cartObj.qty*cartObj.price+'</span></li>')
+    }
+    
+    
+    
+</script>
 {% endblock %}

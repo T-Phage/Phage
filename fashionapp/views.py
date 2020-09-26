@@ -72,11 +72,11 @@ def shop(request):
 
 
 def checkout(request):
-    orders = Order.objects.filter(ordered=False, user=request.user)
-    carts =  Cart.objects.filter(user=request.user)
-    total_orders = Order.objects.get(ordered=False, user=request.user)
-    context = {'orders': orders, 'carts': carts, 'total_orders':total_orders,}
-    return render(request, 'checkout.html', context)
+    # orders = Order.objects.filter(ordered=False, user=request.user)
+    # carts =  Cart.objects.filter(user=request.user)
+    # total_orders = Order.objects.get(ordered=False, user=request.user)
+    # context = {'orders': orders, 'carts': carts, 'total_orders':total_orders,}
+    return render(request, 'checkout.html')
 
 
 def save_ordered(request):
