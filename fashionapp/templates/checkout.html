@@ -26,7 +26,8 @@
                     here to enter your code.</h6>
                 </div>
             </div>
-            <form action="#" class="checkout__form">
+            <form action="#" method="POST" class="checkout__form">
+                {% csrf_token %}
                 <div class="row">
                     <div class="col-lg-8">
                         <h5>Billing detail</h5>
@@ -34,48 +35,57 @@
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>First Name <span>*</span></p>
-                                    <input type="text" id="firstname">
+                                    {{detailform.firstname}}
+                                    <!-- <input type="text" id="firstname"> -->
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>Last Name <span>*</span></p>
-                                    <input type="text" id="lastname">
+                                    {{detailform.lastname}}
+                                    <!-- <input type="text" id="lastname"> -->
                                 </div>
                             </div>
                             <div class="col-lg-12">
                                 <div class="checkout__form__input">
                                     <p>Country <span>*</span></p>
-                                    <input type="text" id="country">
+                                    {{detailform.country}}
+                                    <!-- <input type="text" id="country"> -->
                                 </div>
                                 <div class="checkout__form__input">
                                     <p>Address <span>*</span></p>
-                                    <input type="text" placeholder="Street Address">
-                                    <input type="text" placeholder="Apartment. suite, unite ect ( optinal )">
+                                    {{detailform.address}}
+                                    <!-- <input type="text" placeholder="Street Address">
+                                    <input type="text" placeholder="Apartment. suite, unite ect ( optinal )"> -->
                                 </div>
                                 <div class="checkout__form__input">
                                     <p>Town/City <span>*</span></p>
-                                    <input type="text">
+                                    {{detailform.city}}
+                                    <!-- <input type="text"> -->
                                 </div>
                                 <div class="checkout__form__input">
-                                    <p>Country/State <span>*</span></p>
-                                    <input type="text">
+                                    <p>Region/State <span>*</span></p>
+                                    {{detailform.region}}
+                                    <!-- <input type="text"> -->
                                 </div>
                                 <div class="checkout__form__input">
                                     <p>Postcode/Zip <span>*</span></p>
-                                    <input type="text">
+                                    {{detailform.postcode}}
+                                    <!-- <input type="text"> -->
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>Phone <span>*</span></p>
-                                    <input type="text" id="phone">
+                                    {{detailform.phone}}
+                                    <!-- <input type="text" id="phone"> -->
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>Email <span>*</span></p>
-                                    <input type="email" id="email">
+                                    {{detailform.email}}
+                                    <!-- <input type="email" id="email"> -->
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -90,18 +100,20 @@
                                     </div>
                                     <div class="checkout__form__input">
                                         <p>Account Password <span>*</span></p>
-                                        <input type="text">
+                                        {{detailform.password}}
+                                        <!-- <input type="text"> -->
                                     </div>
                                     <div class="checkout__form__checkbox">
                                         <label for="note">
                                             Note about your order, e.g, special note for delivery
                                             <input type="checkbox" id="note">
-                                            <span class="checkmark"></span>
+                                            <!-- {{detailform.note}} -->
+                                            <!-- <span class="checkmark"></span> -->
                                         </label>
                                     </div>
                                     <div class="checkout__form__input">
-                                        <p>Oder notes <span>*</span></p>
-                                        <input type="text" placeholder="Note about your order, e.g, special noe for delivery">
+                                        <p>Order notes <span>*</span></p>
+                                        <input id="order_note" type="text" placeholder="Note about your order, e.g, special note for delivery">
                                     </div>
                                 </div>
                             </div>
@@ -149,7 +161,7 @@
                                         PayPal
                                         <input type="checkbox" id="paypal">
                                         <span class="checkmark"></span> -->
-                                    </label>
+                                    <!-- </label> -->
                                 </div>
                                 <a  href="/checkout/ordered/" class="site-btn">Place oder</a>
                             </div>
@@ -157,13 +169,13 @@
                     </div>
                 </form>
             </div>
-        </section>
+        </section>{% csrf_token %}
         <!-- Checkout Section End -->
         
 <script>
     
     var cartValue = localStorage.getItem("total");
-    var cartObj = JSON.parse( cartValue );
+    // var cartObj = JSON.parse( cartValue );
     
     $('.checkout__order__total ul li span span')[0].innerText = cartValue;
     $('.checkout__order__total ul li span span')[1].innerText = cartValue;
@@ -171,17 +183,19 @@
     
     $('.site-btn').on('click', function(e){
         e.preventDefault()
-        var username = $('#firstname').val() +" "+ $('#lastname').val()
-        var email = $('#email').val()
-        var phone = $('#phone').val()
-        var country = $('#country').val()
+        var username = $('#id_firstname').val() +" "+ $('#lastname').val()
+        var email = $('#id_email').val()
+        var phone = $('#id_phone').val()
+        var country = $('#id_country').val()
+        var city = $('#id_city').val()
+        var region = $('#id_region').val()
         var total = $('.checkout__order__total ul li span span')[1].innerText
         
         function makePayment() {
             FlutterwaveCheckout({
             public_key: "FLWPUBK-66106623098f258c4726fa3ea93bcf8e-X",
             tx_ref: "hooli-tx-1920bbtyt",
-            amount: total,
+            amount: 1.00 , //total,
             currency: "GHS",
             country: "GH",
             payment_options: "card, mobilemoneyghana, ussd",
@@ -196,6 +210,8 @@
             phone_number: phone,
             name: username,
             country: country,
+            region: region,
+            city: city,
             },
             callback: function (data) {
             console.log(data);
@@ -213,15 +229,24 @@
     makePayment()
     });
     
-    
+    console.log($('.orders'))
+    var arry = []
     for (var key in sessionStorage) {
         var cartValue = sessionStorage.getItem(key);
         var cartObj = JSON.parse( cartValue );
         // console.log(cartValue)
-        $('#orders').append('<li>'+cartObj.qty+' '+cartObj.product+'<span>GH₵ '+cartObj.qty*cartObj.price+'</span></li>')
+        try{
+            arry.push(cartObj.qty + ' ' +cartObj.product)
+        
+            $('#orders').append('<li>'+cartObj.qty+' '+cartObj.product+'<span>GH₵ '+cartObj.qty*cartObj.price+'</span></li>')
+        }catch(e){
+            
+        }
     }
     
-    
+    // arry.push($('.checkout__order__total ul li span span')[1].innerText)
+    arry.toString()
+    localStorage.setItem("arry", arry)
     
 </script>
 {% endblock %}

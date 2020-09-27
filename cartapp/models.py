@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from fashionapp.models import Product
+from paymentsapp.models import PayerDetails
 
 # Create your models here.
 
@@ -36,7 +37,11 @@ class Order(models.Model):
         
 
 class Orders(models.Model):
+    ordered_by = models.ForeignKey(PayerDetails, null=True, on_delete=models.CASCADE)
     items = models.TextField()
-    user = models.CharField(max_length=255)
+    # user = models.CharField(max_length=255)
     total = models.FloatField()
     delivered = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f'{self.ordered_by}  GHS {self.total}'

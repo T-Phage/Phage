@@ -2,6 +2,7 @@ from django.views.generic import ListView
 from django.shortcuts import render, redirect
 from .models import Product
 from cartapp.models import Cart, Order
+from adminapp.forms import *
 
 
 # Create your views here.
@@ -72,11 +73,12 @@ def shop(request):
 
 
 def checkout(request):
+    detailform = PayerDetailsForm()
     # orders = Order.objects.filter(ordered=False, user=request.user)
     # carts =  Cart.objects.filter(user=request.user)
     # total_orders = Order.objects.get(ordered=False, user=request.user)
-    # context = {'orders': orders, 'carts': carts, 'total_orders':total_orders,}
-    return render(request, 'checkout.html')
+    context = {'detailform':detailform}
+    return render(request, 'checkout.html', context)
 
 
 def save_ordered(request):

@@ -9,4 +9,25 @@
     </div>
 </div>
 <div style="height: 50px;"></div>
+
+<script>
+    var total = localStorage.getItem('total')
+    var arry = localStorage.getItem('arry')
+    
+    $(document).ready(function(){
+        // arry = arry.toString()
+        $.ajax({
+            type: "POST",
+            url: "/payments/success/",
+            data: {
+                total: total,
+                arry: arry,
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+            },
+            success:function(response){
+                
+            }
+        });
+    });
+</script>
 {% endblock %}

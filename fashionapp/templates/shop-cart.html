@@ -276,32 +276,35 @@
             shopCalc();
             var cartValue = sessionStorage.getItem(key);
             var cartObj = JSON.parse( cartValue );
-            console.log(cartValue)
-            $('tbody').append('<tr id="'+cartObj.id+'" cart="'+key+'">\
-                                    <td class="cart__product__item">\
-                                        <img src="/'+cartObj.img+'" alt="image">\
-                                        <div class="cart__product__item__title">\
-                                            <h6>'+cartObj.product+'</h6>\
-                                            <div class="rating">\
-                                                <i class="fa fa-star"></i>\
-                                                <i class="fa fa-star"></i>\
-                                                <i class="fa fa-star"></i>\
-                                                <i class="fa fa-star"></i>\
-                                                <i class="fa fa-star"></i>\
+            // console.log(cartValue)
+            try{
+                $('tbody').append('<tr id="'+cartObj.id+'" cart="'+key+'">\
+                                        <td class="cart__product__item">\
+                                            <img src="/'+cartObj.img+'" alt="image">\
+                                            <div class="cart__product__item__title">\
+                                                <h6>'+cartObj.product+'</h6>\
+                                                <div class="rating">\
+                                                    <i class="fa fa-star"></i>\
+                                                    <i class="fa fa-star"></i>\
+                                                    <i class="fa fa-star"></i>\
+                                                    <i class="fa fa-star"></i>\
+                                                    <i class="fa fa-star"></i>\
+                                                </div>\
                                             </div>\
-                                        </div>\
-                                    </td>\
-                                    <td class="cart__price">GH₵<span>'+cartObj.price+'</span></td>\
-                                    <td class="cart__quantity">\
-                                        <div class="pro-qty">\
-                                            <span url="/cart/remove/{{ cart.item.slug }}" class="dec qtybtn">-</span>\
-                                            <input type="text"  min="1" value="'+cartObj.qty+'">\
-                                            <span url="/cart/{{ cart.item.slug }}" class="inc qtybtn">+</span>\
-                                        </div>\
-                                    </td>\
-                                    <td class="cart__total">GH₵ <span>'+(cartObj.price*cartObj.qty)+'</span></td>{% csrf_token %}\
-                                    <td class="cart__close"><a ><span class="icon_close"></span></a></td>\
-                                </tr>')
+                                        </td>\
+                                        <td class="cart__price">GH₵<span>'+cartObj.price+'</span></td>\
+                                        <td class="cart__quantity">\
+                                            <div class="pro-qty">\
+                                                <span url="/cart/remove/{{ cart.item.slug }}" class="dec qtybtn">-</span>\
+                                                <input type="text"  min="1" value="'+cartObj.qty+'">\
+                                                <span url="/cart/{{ cart.item.slug }}" class="inc qtybtn">+</span>\
+                                            </div>\
+                                        </td>\
+                                        <td class="cart__total">GH₵ <span>'+(cartObj.price*cartObj.qty)+'</span></td>{% csrf_token %}\
+                                        <td class="cart__close"><a ><span class="icon_close"></span></a></td>\
+                                    </tr>')
+            }catch(e){}
+            
         }
         shopCalc();
         
