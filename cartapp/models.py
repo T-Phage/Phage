@@ -15,7 +15,6 @@ class Cart(models.Model):
     item = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
     created = models.DateTimeField(auto_now_add=True)
-    ordered = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.quantity} of {self.item.name} of '
@@ -30,18 +29,20 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     ordered = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
-    total = models.FloatField()
- 
+   
     def __str__(self):
-        return f'{self.user.username}  ${self.total}'
+        return f'{self.user.username}  GHS{self.total}'
         
 
 class Orders(models.Model):
-    ordered_by = models.ForeignKey(PayerDetails, null=True, on_delete=models.CASCADE)
+    ordered_by = models.ForeignKey(PayerDetails, on_delete=models.CASCADE)
     items = models.TextField()
-    # user = models.CharField(max_length=255)
     total = models.FloatField()
     delivered = models.BooleanField(default=False)
+    amount_paid = models.FloatField(default=1)
+    transaction_id = models.PositiveIntegerField(default=2)
+    tx_ref = models.CharField(max_length=50, null=True)
+    note = models.CharField(max_length=100, null=True, blank=True)
 
     def __str__(self):
         return f'{self.ordered_by}  GHS {self.total}'

@@ -53,7 +53,7 @@ a:hover{
                         <div class="label new">New</div>
                         {% elif product.label == 'sale' %}
                         <div class="label sale">Sale</div>
-                        {% elif product.label == 'out of stock' %}
+                        {% elif product.stock == 0 %}
                         <div class="label stockout">out of stock</div>
                         {% endif %}
                         <ul class="product__hover">
@@ -72,7 +72,7 @@ a:hover{
                             <i class="fa fa-star"></i>
                         </div>
                         <div class="product__price">GH₵ {{ product.price }}</div> {% csrf_token %}
-                        <a href="" aria-disabled="true" url="cart/{{ product.slug }}" class="cart-btn" id="btn"><span class="icon_cart_alt"></span> Add to cart<span style="display: none;">{{product.id}}</span></a>
+                        <a href="" aria-disabled="true" url="cart/{{ product.slug }}" class="cart-btn" {% if product.stock >= 0 %}id="btn" {% else %} id="out" {% endif %}><span class="icon_cart_alt"></span> Add to cart<span style="display: none;">{{product.id}}</span></a>
                     </div>
                 </div>
             </div>
@@ -119,7 +119,7 @@ a:hover{
 </section>
 <!-- Services Section End -->
 <script>
-
+    console.log("{{request.user}}")
     if("{{request.user}}" == "AnonymousUser"){
         $(document).on('click', '#btn', function(e){
             e.preventDefault();
@@ -201,6 +201,15 @@ a:hover{
             $('.alert-danger').show();
             setTimeout(function() {
             $('.alert-danger').fadeOut();
+        }, 3500);
+    });
+    
+    $(document).on('click','#out', function(e){
+        e.preventDefault();
+        
+        $('.out').show();
+        setTimeout(function() {
+            $('.out').fadeOut();
         }, 3500);
     });
 </script>

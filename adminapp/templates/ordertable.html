@@ -15,11 +15,11 @@
             <tr class="bg-light">
                 <th class="border-top-0">Order</th>
                 <th class="border-top-0">User</th>
-                <th class="border-top-0">Delivered</th>
+                <th class="border-top-0">Status</th>
+                <th class="border-top-0">Transaction_id</th>
                 <th class="border-top-0">Total</th>
-                <!-- <th class="border-top-0">Quantity</th>
-                <th class="border-top-0">Stock</th>
-                <th class="border-top-0">Total</th> -->
+                <th class="border-top-0">Amount_paid</th>
+                <th class="border-top-0">tx_ref</th>
             </tr>
         </thead>
         <tbody id="delivered">
@@ -29,22 +29,24 @@
             <tr>
                 <td>
                     <div class="d-flex align-items-center">
-                        <div class="m-r-10"><a class="btn btn-circle btn-info text-white text-uppercase">{{product.name|slice:":2"}}</a></div>
+                        <div class="m-r-10"><a href="{% url 'adminapp:order_detail' order.id %}" class="btn btn-circle btn-info text-white text-uppercase">{{order.ordered_by|slice:":2"}}</a></div>
                         <div class="">
                             <h4 class="font-14">{{order.items}}</h4>
                         </div>
                     </div>
                 </td>
-                <td>{{order.user}}</td>
-                <td>{{order.delivered}}</td>
-                <!-- <td>
-                    <label class="label label-danger">{{product.size}}</label>
-                </td> -->
+                <td>{{order.ordered_by}}</td>
+                <td>Delivered</td>
+                <td>
+                    <label class="label label-danger">{{order.transaction_id}}</label>
+                </td>
                 <td>GH₵ {{order.total}}</td>
-                <!-- <td>{{product.stock}}</td> -->
-                <!-- <td>
-                    <h5 class="m-b-0">$<script>document.write(parseFloat("{{product.price}}") * parseInt("{{product.quantity}}"))</script></h5>
-                </td> -->
+                <td>
+                    <label class="label label-success">GH₵ {{order.amount_paid}}</label>
+                </td>
+                <td>{{order.tx_ref}}
+                    <h5 class="m-b-0"></h5>
+                </td>
             </tr>
             {% endif %}
             {% endfor %}
@@ -57,22 +59,24 @@
             <tr>
                 <td>
                     <div class="d-flex align-items-center">
-                        <div class="m-r-10"><a class="btn btn-circle btn-info text-white text-uppercase">{{product.name|slice:":2"}}</a></div>
+                        <div class="m-r-10"><a class="btn btn-circle btn-info text-white text-uppercase">{{order.ordered_by|slice:":2"}}</a></div>
                         <div class="">
                             <h4 class="font-14">{{order.items}}</h4>
                         </div>
                     </div>
                 </td>
-                <td>{{order.user}}</td>
-                <td>{{order.delivered}}</td>
-                <!-- <td>
-                    <label class="label label-danger">{{product.size}}</label>
-                </td> -->
+                <td>{{order.ordered_by}}</td>
+                <td>Not Delivered</td>
+                <td>
+                    <label class="label label-danger">{{order.transaction_id}}</label>
+                </td>
                 <td>GH₵ {{order.total}}</td>
-                <!-- <td>{{product.stock}}</td> -->
-                <!-- <td>
-                    <h5 class="m-b-0">$<script>document.write(parseFloat("{{product.price}}") * parseInt("{{product.quantity}}"))</script></h5>
-                </td> -->
+                <td>
+                    <label class="label label-success">GH₵ {{order.amount_paid}}</label>
+                </td>
+                <td>{{order.tx_ref}}
+                    <h5 class="m-b-0"></h5>
+                </td>
             </tr>
             {% endif %}
             {% endfor %}
@@ -84,7 +88,7 @@
     $('#delivered').hide();
     $('tbody tr td div .font-14').each(function (){
         var txt = $(this)[0].innerText
-        var txt = txt.replace(/, /gi, "\n")
+        var txt = txt.replace(/,/gi, "\n")
        console.log(txt) 
        $(this)[0].innerText = txt;
     });

@@ -34,13 +34,12 @@
     <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
     
-    
 </head>
 <style>
-.alert{
+ .alert{
     width: 300px;  
     display: none;
-}
+}/*
 @media (min-width: 576px){
     .modal-dialog {
     max-width: 500px;
@@ -69,15 +68,18 @@
     max-width: 500px;
     margin: 1.75rem auto;
     }
-}
+} */
 
 </style>
 <body>
-    <div class="alert alert-success fixed-top modal-dialog" role="alert">
+    <div style="position: fixed;" class="alert alert-success fixed-top modal-dialog" role="alert">
     
     </div>
-    <div class="alert alert-danger fixed-top modal-dialog" role="alert">
+    <div style="position: fixed;" class="alert alert-danger fixed-top modal-dialog" role="alert">
         already added to cart
+    </div>
+    <div style="position: fixed;" class="alert alert-danger fixed-top modal-dialog out" role="alert">
+        out of stock
     </div>
     
     <!-- Page Preloder -->
@@ -184,7 +186,13 @@
     
     {% block success %}
     {% endblock %}
+    
+    {% block register %}
+    {% endblock %}
 
+    {% block login %}
+    {% endblock %}
+    
     <!-- Footer Section Begin -->
 <footer class="footer" >
     <div class="container">

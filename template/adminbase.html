@@ -54,7 +54,7 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="{% url 'adminapp:dashboard' %}">
                         <h3 class="logo-text">Admin</h3>
                         <!-- Logo icon -->
                         <!-- <b class="logo-icon">
@@ -189,7 +189,7 @@
                         <div class="d-flex align-items-center">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="{% url 'adminapp:dashboard' %}">Home</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">
                                         {% if request.path == dashboard %}Dashboard
                                         {% elif request.path == products %}All products

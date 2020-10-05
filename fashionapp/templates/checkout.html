@@ -26,7 +26,8 @@
                     here to enter your code.</h6>
                 </div>
             </div>
-            <form action="#" method="POST" class="checkout__form">
+            <!-- action="{% url 'paymentsapp:success' %}" -->
+            <form method="POST" action="/payments/success/" enctype="multipart/form-data" class="checkout__form">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-lg-8">
@@ -46,74 +47,73 @@
                                     <!-- <input type="text" id="lastname"> -->
                                 </div>
                             </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Other  names <span>*</span></p>
+                                    {{detailform.othername}}
+                                    <!-- <input type="text" id="lastname"> -->
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="checkout__form__input">
+                                    <p>Username <span>*</span></p>
+                                    <input type="text" id="username">
+                                </div>
+                            </div>
                             <div class="col-lg-12">
                                 <div class="checkout__form__input">
                                     <p>Country <span>*</span></p>
                                     {{detailform.country}}
-                                    <!-- <input type="text" id="country"> -->
                                 </div>
                                 <div class="checkout__form__input">
                                     <p>Address <span>*</span></p>
                                     {{detailform.address}}
-                                    <!-- <input type="text" placeholder="Street Address">
-                                    <input type="text" placeholder="Apartment. suite, unite ect ( optinal )"> -->
                                 </div>
                                 <div class="checkout__form__input">
                                     <p>Town/City <span>*</span></p>
                                     {{detailform.city}}
-                                    <!-- <input type="text"> -->
                                 </div>
                                 <div class="checkout__form__input">
                                     <p>Region/State <span>*</span></p>
                                     {{detailform.region}}
-                                    <!-- <input type="text"> -->
                                 </div>
                                 <div class="checkout__form__input">
                                     <p>Postcode/Zip <span>*</span></p>
                                     {{detailform.postcode}}
-                                    <!-- <input type="text"> -->
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>Phone <span>*</span></p>
                                     {{detailform.phone}}
-                                    <!-- <input type="text" id="phone"> -->
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="checkout__form__input">
                                     <p>Email <span>*</span></p>
                                     {{detailform.email}}
-                                    <!-- <input type="email" id="email"> -->
                                 </div>
                             </div>
                             <div class="col-lg-12">
+                                {{detailform.account}} Create an acount?
+                                
                                 <div class="checkout__form__checkbox">
-                                    <label for="acc">
-                                        Create an acount?
-                                        <input type="checkbox" id="acc">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <p>Create am account by entering the information below. If you are a returing
-                                        customer login at the <br />top of the page</p>
+                                    
+                                    <!-- <p>Create an account by entering the information below. If you are a returing
+                                        customer login at the <br />top of the page</p> -->
                                     </div>
                                     <div class="checkout__form__input">
                                         <p>Account Password <span>*</span></p>
-                                        {{detailform.password}}
-                                        <!-- <input type="text"> -->
+                                        <input type="password" id="password">
                                     </div>
                                     <div class="checkout__form__checkbox">
                                         <label for="note">
                                             Note about your order, e.g, special note for delivery
-                                            <input type="checkbox" id="note">
-                                            <!-- {{detailform.note}} -->
-                                            <!-- <span class="checkmark"></span> -->
                                         </label>
                                     </div>
                                     <div class="checkout__form__input">
                                         <p>Order notes <span>*</span></p>
-                                        <input id="order_note" type="text" placeholder="Note about your order, e.g, special note for delivery">
+                                        <input type="text" id="note">
                                     </div>
                                 </div>
                             </div>
@@ -145,108 +145,181 @@
                                     </ul>
                                 </div>
                                 <div class="checkout__order__widget">
-                                    <label for="o-acc">
-                                        Create an acount?
-                                        <input type="checkbox" id="o-acc">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <p>Create am acount by entering the information below. If you are a returing customer
-                                    login at the top of the page.</p>
-                                    <!-- <label for="check-payment">
-                                        Cheque payment
-                                        <input type="checkbox" id="check-payment">
-                                        <span class="checkmark"></span>
-                                    </label>
-                                    <label for="paypal">
-                                        PayPal
-                                        <input type="checkbox" id="paypal">
-                                        <span class="checkmark"></span> -->
-                                    <!-- </label> -->
+                                    <input type="checkbox" id=""> Create an Account
                                 </div>
-                                <a  href="/checkout/ordered/" class="site-btn">Place oder</a>
+                                <!-- /checkout/ordered/ -->
+                                <button type="submit" class="site-btn">Place oder</button>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
-        </section>{% csrf_token %}
+        </section>
         <!-- Checkout Section End -->
         
 <script>
-    
-    var cartValue = localStorage.getItem("total");
-    // var cartObj = JSON.parse( cartValue );
-    
-    $('.checkout__order__total ul li span span')[0].innerText = cartValue;
-    $('.checkout__order__total ul li span span')[1].innerText = cartValue;
-    
-    
-    $('.site-btn').on('click', function(e){
-        e.preventDefault()
-        var username = $('#id_firstname').val() +" "+ $('#lastname').val()
-        var email = $('#id_email').val()
-        var phone = $('#id_phone').val()
-        var country = $('#id_country').val()
-        var city = $('#id_city').val()
-        var region = $('#id_region').val()
-        var total = $('.checkout__order__total ul li span span')[1].innerText
+    if ("{{request.user}}" == "AnonymousUser"){
         
-        function makePayment() {
-            FlutterwaveCheckout({
-            public_key: "FLWPUBK-66106623098f258c4726fa3ea93bcf8e-X",
-            tx_ref: "hooli-tx-1920bbtyt",
-            amount: 1.00 , //total,
-            currency: "GHS",
-            country: "GH",
-            payment_options: "card, mobilemoneyghana, ussd",
-            redirect_url: // specified redirect URL
-            "",
-            meta: {
-            consumer_id: 23,
-            consumer_mac: "92a3-912ba-1192a",
-            },
-            customer: {
-            email: email,
-            phone_number: phone,
-            name: username,
-            country: country,
-            region: region,
-            city: city,
-            },
-            callback: function (data) {
-            console.log(data);
-            },
-            onclose: function() {
-            // close modal
-            },
-            customizations: {
-            title: "My store",
-            description: "Payment for items in cart",
-            logo: "https://assets.piedpiper.com/logo.png",
-        },
-      });
-    }
-    makePayment()
-    });
-    
-    console.log($('.orders'))
-    var arry = []
-    for (var key in sessionStorage) {
-        var cartValue = sessionStorage.getItem(key);
-        var cartObj = JSON.parse( cartValue );
-        // console.log(cartValue)
-        try{
-            arry.push(cartObj.qty + ' ' +cartObj.product)
+        var account = "no";
+        console.log(account)
         
-            $('#orders').append('<li>'+cartObj.qty+' '+cartObj.product+'<span>GH₵ '+cartObj.qty*cartObj.price+'</span></li>')
-        }catch(e){
+        var cartValue = localStorage.getItem("total");
+
+        $('.checkout__order__total ul li span span')[0].innerText = cartValue;
+        $('.checkout__order__total ul li span span')[1].innerText = cartValue;
+        
+        $('.site-btn').on('click', function(e){
+            e.preventDefault()
             
+            var othername = $('#id_othername').val()
+            var username = $('#id_firstname').val() +" "+ $('#lastname').val()
+            var email = $('#id_email').val()
+            var phone = $('#id_phone').val()
+            var country = $('#id_country').val()
+            var city = $('#id_city').val()
+            var region = $('#id_region').val()
+            var total = $('.checkout__order__total ul li span span')[1].innerText
+            var items = localStorage.getItem('arry')
+            var form = $('form')
+            if($("input[type=checkbox]").prop('checked') == true){
+                
+                account = "yes";
+            }else{account="no"}
+            
+            function makePayment() {
+                FlutterwaveCheckout({
+                    public_key: "FLWPUBK-66106623098f258c4726fa3ea93bcf8e-X",
+                    tx_ref: "hooli-tx-1920bbtyt",
+                    amount: total,
+                    currency: "GHS",
+                    country: "GH",
+                    payment_options: "card, mobilemoneyghana, ussd",
+                    redirect_url: "", // specified redirect URL
+                    // "{% url 'paymentsapp:success' %}",
+                    meta: {
+                    consumer_id: 23,
+                    consumer_mac: "92a3-912ba-1192a",
+                    },
+                    customer: {
+                    email: email,
+                    phone_number: phone,
+                    name: username,
+                    country: country,
+                    region: region,
+                    city: city,
+                    },
+                    callback: function (data) {
+                    console.log(data);
+                    console.log(data.status)
+                    console.log(data.amount)
+                    console.log(data.tx_ref)
+                    console.log(data.transaction_id)
+                        if(data.status == "successful"){
+                            
+                            var articles = new Array();
+                            var articles_q = new Array();
+                            for (var key in sessionStorage){
+                                var cartValue = sessionStorage.getItem(key);
+                                var cartObj = JSON.parse( cartValue );
+                                
+                                try{
+                                    articles[i] = cartObj.product 
+                                    articles_q[i] = cartObj.qty
+                                    
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: "{% url 'paymentsapp:add_quantity' %}",
+                                        data: {
+                                            q_value: articles_q[i],
+                                            item: articles[i],
+                                            csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                                        },
+                                        success:function(response){
+                                            console.log(response.message)
+                                        }
+                                    });
+                                    
+                                }catch(e){}
+                            }
+                            
+                            $.ajax({
+                                type: 'POST',
+                                url: "{% url 'paymentsapp:success' %}",
+                                data: {
+                                    firstname: $('#id_firstname').val(),
+                                    lastname: $('#id_lastname').val(),
+                                    othername: $('#id_othername').val(),
+                                    username: $('#username').val(),
+                                    password: $('#password').val(),
+                                    email: $('#id_email').val(),
+                                    country: $('#id_country').val(),
+                                    region: $('#id_region').val(),
+                                    address: $('#id_address').val(),
+                                    postcode: $('#id_postcode').val(),
+                                    phone: $('#id_phone').val(),
+                                    password: $('#password').val(),
+                                    note: $('#id_note').val(),
+                                    city: $('#id_city').val(),
+                                    account: account,
+                                    paid: data.amount,
+                                    transaction_id: data.transaction_id,
+                                    tx_ref: data.tx_ref,
+                                    total: total,
+                                    items: items,
+                                    note: note,
+                                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                                },
+                                success:function(response){
+                                    console.log(response.message)
+                                    if(response.message == "success"){
+                                        window.location.replace("{% url 'paymentsapp:success_page' %}")
+                                    }
+                                }
+                            });
+                        }
+                    },
+                    onclose: function() {
+                    // close modal
+                    
+                    },
+                    customizations: {
+                    title: "My store",
+                    description: "Payment for items in cart",
+                    logo: "https://assets.piedpiper.com/logo.png",
+                    },
+                });
+            }
+            makePayment();
+        });
+     
+        var arry = []
+        for (var key in sessionStorage) {
+            var cartValue = sessionStorage.getItem(key);
+            var cartObj = JSON.parse( cartValue );
+            
+            try{
+                arry.push(cartObj.qty + ' ' +cartObj.product)
+            
+                $('#orders').append('<li>'+cartObj.qty+' '+cartObj.product+'<span>GH₵ '+cartObj.qty*cartObj.price+'</span></li>')
+            }catch(e){
+                
+            }
         }
+        
+        arry.toString()
+        localStorage.setItem("arry", arry)
+    } else{
+        // $('#id_othername').val()
+        // $('#id_firstname').val()
+        // $('#lastname').val()
+        // $('#id_email').val()
+        // $('#id_phone').val()
+        // $('#id_country').val()
+        // $('#id_city').val()
+        // $('#id_region').val()
+        
     }
     
-    // arry.push($('.checkout__order__total ul li span span')[1].innerText)
-    arry.toString()
-    localStorage.setItem("arry", arry)
     
 </script>
 {% endblock %}

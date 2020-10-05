@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from .models import Product
 from cartapp.models import Cart, Order
 from adminapp.forms import *
+from paymentsapp.models import PayerDetails
 
 
 # Create your views here.
@@ -73,6 +74,7 @@ def shop(request):
 
 
 def checkout(request):
+        
     detailform = PayerDetailsForm()
     # orders = Order.objects.filter(ordered=False, user=request.user)
     # carts =  Cart.objects.filter(user=request.user)
@@ -86,7 +88,8 @@ def save_ordered(request):
     Cart.objects.filter(user=request.user, ordered=True).update(ordered=True)
     Cart.objects.filter(user=request.user, ordered=True).delete()
     return redirect('fashionapp:index')
-    
+
+
 # from django.shortcuts import render
 #
 #

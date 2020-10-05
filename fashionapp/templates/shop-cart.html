@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block shop-cart %}
+{% csrf_token %}
     <!-- Breadcrumb Begin -->
     <div class="breadcrumb-option">
         <div class="container">
@@ -34,7 +35,7 @@
                             </thead>
                             <tbody>
                                 
-                                <!-- {% for cart in carts %}
+                                {% for cart in carts %}
                                 {% for order in orders %}
                                 {% if cart.user == order.user %}
                                 <tr url="/cart/{{ cart.item.slug }}">
@@ -64,7 +65,7 @@
                                 </tr>
                                 {% endif %}
                                 {% endfor %}
-                                {% endfor %} -->
+                                {% endfor %}
                                                                 
                             </tbody>
                         </table>
@@ -97,8 +98,8 @@
                     <div class="cart__total__procced">
                         <h6>Cart total</h6>
                         <ul>
-                            <li class="subtotal">Subtotal <span>$ {{total_orders}}</span></li>
-                            <li class="total">Total <span>$ {{total_orders}}</span></li>
+                            <li class="subtotal">Subtotal <span> {total_orders}}</span></li>
+                            <li class="total">Total <span> {{total_orders}}</span></li>
                         </ul>
                         <!-- href="{% url 'fashionapp:checkout' %}" -->
                         <a href="{% url 'fashionapp:checkout' %}" class="primary-btn checkout">Proceed to checkout</a>
@@ -110,6 +111,17 @@
     <!-- Shop Cart Section End -->
     
 <script> 
+
+var articles = new Array();
+
+for (var i=1; i<=4; i++){
+
+   articles[i] = "item"+i;
+//    console.log(articles[i] = "item"+i)
+
+}
+console.log(articles[1])
+
     
     if("{{request.user}}" == "AnonymousUser"){
         
@@ -149,8 +161,8 @@
             
             localStorage.setItem("total", sum)
         }
-        
-        
+ 
+    
         $(document).on('click', '.icon_close', function(e){
             // shopCalc();
             e.preventDefault();
@@ -166,6 +178,9 @@
             
             localStorage.setItem("total", total)
             
+            $('.total')[0].innerText = "GH₵ " + total
+            $('.subtotal')[0].innerText = "GH₵ " + total
+            
             // console.log(total)
             var tr_id = tr.attr('id')
             var cart = tr.attr('cart')
@@ -176,9 +191,7 @@
                 if (key === cart) {
                     sessionStorage.removeItem(key);
                 }
-            }          
-            
-            // var total = localStorage.getItem("total", sum)
+            }
         });
         
         $(document).on('click', '.dec', function(){
@@ -219,6 +232,8 @@
             var tr = tr.parent()
             var q_value = $(this)[0].previousSibling.value
             var cart = tr.attr('cart')
+            // console.log()
+            var item = tr[0].children[0].children[1].children[0].innerText
             
             for (var key in sessionStorage) {
                 if (key === cart) {
@@ -226,57 +241,37 @@
                     var cartObj = JSON.parse( cartValue );
                     cartObj.qty = parseInt(cartObj.qty) + 1
                     sessionStorage.setItem(cart, JSON.stringify(cartObj))
-                    // console.log(cartValue) 
+                    // console.log(cartValue)
                 }
             }
+            console.log(q_value)
+            $.ajax({
+                type: 'POST',
+                url: "{% url 'paymentsapp:add_quantity' %}",
+                data: {
+                    q_value: q_value,
+                    item: item,
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success:function(response){
+                    console.log(response.message)
+                }
+            });
         });
         
         $(document).on('click', '.checkout', function(e){
             shopCalc()
-            // e.preventDefault();
-            // var arry = []
-            // var total = $('.total span')[0].innerText
-            // var total = total.substring(1)
-            // var li = $('tbody tr:last').index() + 1
-            // for(var i=1; i<=li; i++){
-            //     var p_name = $('tbody tr:nth-child('+i+') .cart__product__item__title h6')[0].innerText
-            //     var p_quantity = $('tbody tr:nth-child('+i+') .cart__quantity input').val()
-            //     var order = p_quantity +" of "+ p_name
-            //     arry.push(order)     
-            // }
-            // arry.push($('.total span')[0].innerText )
-            // console.log(arry)
-            // orders = arry.join(', ')
-            // localStorage.setItem('arry', JSON.stringify(arry))
-            // for (var key in sessionStorage) {
-            //     if (key === cart) {
-            //         var cartValue = sessionStorage.getItem(key);
-            //         var cartObj = JSON.parse( cartValue );
-            //         cartObj.qty = parseInt(cartObj.qty) + 1
-            //         sessionStorage.setItem(cart, JSON.stringify(cartObj))
-            //         // console.log(cartValue) 
-            //     }
-            // }
-            // $.ajax({
-            //     type: 'POST',
-            //     url: '/save_orders/',
-            //     data: {
-            //         order: orders,
-            //         total: total,
-            //         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-            //     },
-            //     success:function(response){
-            //         console.log(response.message)
-            //     }
-            // });
+            e.preventDefault();
+            
+             // return;
             
         });
-        
+        console.log(sessionStorage.length)
         for (var key in sessionStorage) {
             shopCalc();
             var cartValue = sessionStorage.getItem(key);
             var cartObj = JSON.parse( cartValue );
-            // console.log(cartValue)
+            
             try{
                 $('tbody').append('<tr id="'+cartObj.id+'" cart="'+key+'">\
                                         <td class="cart__product__item">\
@@ -307,6 +302,7 @@
             
         }
         shopCalc();
+        
         
     }else{
         $(document).on('click', '.dec', function(e){
@@ -418,6 +414,12 @@
                 }
             });
         });
+    }
+    
+    console.log($('.total span')[0].innerText)
+    if($('.total span')[0].innerText == "GH₵0"){
+        $('.checkout').attr('href', '#')
+        // console.log('gh')
     }
 </script>
 {% endblock %}

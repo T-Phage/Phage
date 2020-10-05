@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block success %}
-<div style="height: 50px;"></div>
+<div style="height: 70px;"></div>
 <div class="container" >
     <div class="">
         <h1>Payment Successfull</h1>
@@ -8,26 +8,16 @@
         <h6>Click to continue shopping <a href="{% url 'fashionapp:index' %}">Home</a></h6>
     </div>
 </div>
-<div style="height: 50px;"></div>
+<div style="height: 90px;"></div>
 
 <script>
     var total = localStorage.getItem('total')
     var arry = localStorage.getItem('arry')
     
-    $(document).ready(function(){
-        // arry = arry.toString()
-        $.ajax({
-            type: "POST",
-            url: "/payments/success/",
-            data: {
-                total: total,
-                arry: arry,
-                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-            },
-            success:function(response){
-                
-            }
-        });
-    });
+    
+    // $('a').on('click', function(){
+        localStorage.clear();
+        sessionStorage.clear();
+    // });
 </script>
 {% endblock %}
