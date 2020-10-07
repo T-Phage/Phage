@@ -16,13 +16,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ashion | Template</title>
 
+    <link rel="icon" href="{% static 'img/nslogo.png' %}" type="image/png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
-    rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" type="text/css">
@@ -72,7 +72,7 @@
 
 </style>
 <body>
-    <div style="position: fixed;" class="alert alert-success fixed-top modal-dialog" role="alert">
+    <div style="position: fixed;" class="alert alert-success fixed-top " role="alert">
     
     </div>
     <div style="position: fixed;" class="alert alert-danger fixed-top modal-dialog" role="alert">
@@ -104,7 +104,7 @@
             </a></li>
         </ul>
         <div class="offcanvas__logo">
-            <a href="{% url 'fashionapp:index' %}"><img src="{% static 'img/logo.png' %}" alt="logo"></a>
+            <a href="{% url 'fashionapp:index' %}"><img height="80px" width="200px" src="{% static 'img/nsnavlogo.png' %}" alt="logo"></a>
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__auth">
@@ -113,14 +113,14 @@
         </div>
     </div>
     <!-- Offcanvas Menu End -->
-
+    <!-- {% static 'img/logo.png' %} -->
     <!-- Header Section Begin -->
     <header class="header">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-3 col-lg-2">
                     <div class="header__logo">
-                        <a href="{% url 'fashionapp:index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                        <a href="{% url 'fashionapp:index' %}"><img height="80px" width="200px" src="{% static 'img/nsnavlogo.png' %}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-7">
@@ -137,10 +137,17 @@
                 </div>
                 <div class="col-lg-3">
                     <div class="header__right">
-                        <div class="header__right__auth">
+                        
+                        <div id="unknown" class="header__right__auth">
                             <a href="{% url 'accounts:login' %}">Login</a>
                             <a href="{% url 'accounts:register' %}">Register</a>
                         </div>
+                        
+                        <div id="known" class="header__right__auth">
+                            <a href="{% url 'accounts:logout' %}">Logout</a>
+                            <a href="#">Account</a>
+                        </div>
+                       
                         <ul class="header__right__widget">
                             <li><span class="icon_search search-switch"></span></li>
                             <li>
@@ -169,6 +176,7 @@
     </header>
     <!-- Header Section End -->
     {% csrf_token %}
+    
     {% block index %}
     {% endblock %}
 
@@ -200,7 +208,7 @@
             <div class="col-lg-4 col-md-6 col-sm-7">
                 <div class="footer__about">
                     <div class="footer__logo">
-                        <a href="{% url 'fashionapp:index' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                        <a href="{% url 'fashionapp:index' %}"><img height="80px" width="200px" src="{% static 'img/nsnavlogo.png' %}" alt=""></a>
                     </div>
                     <p>We only accept payments from these transactions</p>
                     <div class="row">
@@ -211,7 +219,7 @@
                             <!-- <a href="#"><img src="{% static 'img/payment/payment-4.png' %}" alt=""></a> -->
                             <!-- <a href="#"><img src="{% static 'img/payment/payment-5.png' %}" alt=""></a> -->
                             
-                            <a href="#"><img width="100px" height="50px" src="https://cdn.modernghana.com/thumb/XGltYWdlc1xjb250ZW50XDExMjgyMDE5MTAzNjI1LWk0MXAyNjZnZmEtbW9tby5qcGd8OTkwfDkvMjcvMjAyMA==.jpg" alt=""></a>
+                            <a href="#"><img width="100px" height="50px" src="{% static 'img/unnamed.jpg' %}" alt=""></a>
                             
                         </div>
                     </div>
@@ -222,8 +230,8 @@
                     <h6>Quick links</h6>
                     <ul>
                         <li><a href="{% url 'accounts:login' %}">My Account</a></li>
-                        <li><a href="">About</a></li>
-                        <li><a href="">Blogs</a></li>
+                        <li><a href="#">About</a></li>
+                        <li><a href="#">Blogs</a></li>
                         <li><a href="{% url 'fashionapp:contact' %}">Contact</a></li>
                         <!-- <li><a href="" aria-disabled="true">FAQ</a></li> -->
                     </ul>
@@ -250,7 +258,7 @@
                     <div class="footer__social">
                         <a href="#"><i class="fa fa-facebook"></i></a>
                         <a href="#"><i class="fa fa-twitter"></i></a>
-                        <a href="#"><i class="fa fa-youtube-play"></i></a>
+                        <!-- <a href="#"><i class="fa fa-youtube-play"></i></a> -->
                         <a href="#"><i class="fa fa-instagram"></i></a>
                         <a href="#"><i class="fa fa-pinterest"></i></a>
                     </div>
@@ -261,7 +269,7 @@
             <div class="col-lg-12">
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                 <div class="footer__copyright__text">
-                    <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+                    <p>Copyright &copy; <script>document.write(new Date().getFullYear());</script> All rights reserved<i class="fa fa-heart" aria-hidden="true"></i> by <a href="#" target="_blank"></a></p>
                 </div>
                 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
             </div>
@@ -283,9 +291,14 @@
 
 <script>
     if("{{request.user}}" == "AnonymousUser"){
-        
+        $('#known').hide()
+        $('#unknown').show()
     }
     else {
+        
+        $('#unknown').hide()
+        $('#known').show()
+        
         $(document).ready(function(){
             $.ajax({
                 type: 'POST',

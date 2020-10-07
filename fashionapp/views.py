@@ -1,7 +1,7 @@
 from django.views.generic import ListView
 from django.shortcuts import render, redirect
 from .models import Product
-from cartapp.models import Cart, Order
+from cartapp.models import Cart, Orders
 from adminapp.forms import *
 from paymentsapp.models import PayerDetails
 
@@ -25,44 +25,13 @@ def convert_list_to_string(org_list, seperator=' '):
         Returns the concatenated string """
     return seperator.join(org_list)
 
-ids = []
+# ids = []
 def shopcart(request):
-    if request.is_ajax:
-        
-        id = request.POST.get('id', False)
-        ids.append(id)
-        
-        print(id)
-        print(ids)
-        # full_str = convert_list_to_string(ids, ' or')
-        full_str = ''.join([str(elem) for elem in ids])
-        print(full_str)
-        # print(Product.objects.filter(id=)
-        # print("df")
-        # name = request.POST['name']
-        # print(name)
-        # numbers = request.POST['number']
-        # print(numbers)
-
     products = Product.objects.all()
-    # orders = Order.objects.filter(ordered=False,)
-    # carts =  Cart.objects.filter(user=request.user)
-    # total_orders = Order.objects.filter(ordered=False, user=request.user)
-    # if total_orders.exists():
-    #     total_orders = total_orders[0].total  
-    # else:
-    #     total_orders = 0
-    # context = {'carts': carts, 'orders': orders, 'total_orders':total_orders,}
-    return render(request, 'shop-cart.html', {'products':products})
-
-
-def samajax(request):
-    print("df")
-    name = request.POST['name']
-    print(name)
-    numbers = request.POST['number']
-    print(numbers[0][1])
-
+    carts =  Cart.objects.all()
+    print(request.user)
+    context = {'carts': carts,}
+    return render(request, 'shop-cart.html', context)
 
 
 def contact(request):
@@ -74,20 +43,14 @@ def shop(request):
 
 
 def checkout(request):
-        
     detailform = PayerDetailsForm()
     # orders = Order.objects.filter(ordered=False, user=request.user)
-    # carts =  Cart.objects.filter(user=request.user)
+    carts =  Cart.objects.all()
+    payer = PayerDetails.objects.filter(payer=request.user)[0]
+    print(payer)
     # total_orders = Order.objects.get(ordered=False, user=request.user)
-    context = {'detailform':detailform}
+    context = {'detailform':detailform, 'carts':carts, 'payer':payer,}
     return render(request, 'checkout.html', context)
-
-
-def save_ordered(request):
-    Order.objects.filter(ordered=False, user=request.user).update(ordered=True)
-    Cart.objects.filter(user=request.user, ordered=True).update(ordered=True)
-    Cart.objects.filter(user=request.user, ordered=True).delete()
-    return redirect('fashionapp:index')
 
 
 # from django.shortcuts import render

@@ -129,13 +129,11 @@
                                         </li>
                                     </ul>
                                     <ul id="orders">
-                                        
-                                        <!-- <li>{{cart}}<span>$ <script>document.write(parseInt("{{cart.quantity}}") * parseFloat("{{cart.item.price}}"))</script></span></li> -->
-                                        
-                                        <!-- <li>01. Chain buck bag <span>$ 300.0</span></li>
-                                        <li>02. Zip-pockets pebbled<br /> tote briefcase <span>$ 170.0</span></li>
-                                        <li>03. Black jean <span>$ 170.0</span></li>
-                                        <li>04. Cotton shirt <span>$ 110.0</span></li> -->
+                                        {% for cart in carts %}
+                                        {% if cart.user.payer == request.user %}
+                                        <li><span>{{cart.quantity}}</span> <it>{{cart.item}}</it><span>GH₵ <script>document.write(parseInt("{{cart.quantity}}") * parseFloat("{{cart.item.price}}"))</script></span></li>
+                                        {% endif %}
+                                        {% endfor %}
                                     </ul>
                                 </div>
                                 <div class="checkout__order__total">
@@ -257,8 +255,7 @@
                                     address: $('#id_address').val(),
                                     postcode: $('#id_postcode').val(),
                                     phone: $('#id_phone').val(),
-                                    password: $('#password').val(),
-                                    note: $('#id_note').val(),
+                                    note: $('#note').val(),
                                     city: $('#id_city').val(),
                                     account: account,
                                     paid: data.amount,
@@ -283,9 +280,9 @@
                     
                     },
                     customizations: {
-                    title: "My store",
+                    title: "NASAM GHANA",
                     description: "Payment for items in cart",
-                    logo: "https://assets.piedpiper.com/logo.png",
+                    logo: "https://nasam-app.herokuapp.com/static/img/nslogo.png",
                     },
                 });
             }
@@ -309,17 +306,140 @@
         arry.toString()
         localStorage.setItem("arry", arry)
     } else{
-        // $('#id_othername').val()
-        // $('#id_firstname').val()
-        // $('#lastname').val()
-        // $('#id_email').val()
-        // $('#id_phone').val()
-        // $('#id_country').val()
-        // $('#id_city').val()
-        // $('#id_region').val()
+        total_arry = []
+        $('#orders li').each(function(){
+            var str = $(this)[0].children[2].innerText
+            var total = str.substring(4)
+            
+            total_arry.push(total)
+        });
+        // console.log(total_arry)
+        sum = 0;
+        for (var i=0; i<total_arry.length; i++){
+            sum += parseFloat(total_arry[i])
+        }
+        // console.log(sum)
+        // console.log("{{request.user.get_full_name}}")
+        $('.checkout__order__total ul li span span')[0].innerText = sum;
+        $('.checkout__order__total ul li span span')[1].innerText = sum;
         
+        
+        
+        $('#id_firstname')[0].value = "{{request.user.first_name}}"
+        $('#id_lastname')[0].value = "{{request.user.last_name}}"
+        $('#id_othername')[0].value = "{{payer.othername}}"
+        $('#username')[0].value = "{{request.user}}"
+        $('#id_email')[0].value = "{{request.user.email}}"
+        $('#id_country')[0].value = "{{payer.country}}"
+        $('#id_region')[0].value = "{{payer.region}}"
+        $('#id_address')[0].value = "{{payer.address}}"
+        $('#id_postcode')[0].value = "{{payer.postcode}}"
+        $('#id_phone')[0].value = "{{payer.phone}}"
+        $('#password')[0].value = "{{request.user.password}}"
+        $('#note')[0].value = "{{payer.note}}"
+        $('#id_city')[0].value = "{{payer.city}}"
+        
+        function makePayment() {
+            FlutterwaveCheckout({
+                public_key: "FLWPUBK-66106623098f258c4726fa3ea93bcf8e-X",
+                tx_ref: "hooli-tx-1920bbtyt",
+                amount: sum,
+                currency: "GHS",
+                country: "GH",
+                payment_options: "card, mobilemoneyghana, ussd",
+                redirect_url: "", // specified redirect URL
+                // "{% url 'paymentsapp:success' %}",
+                meta: {
+                consumer_id: "{{request.user.id}}",
+                consumer_mac: "92a3-912ba-1192a",
+                },
+                customer: {
+                email: "{{request.user.email}}",
+                phone_number: "{{payer.phone}}",
+                name: "{{request.user.get_full_name}}",
+                country: "{{payer.country}}",
+                region: "{{payer.region}}",
+                city: "{{payer.city}}",
+                },
+                callback: function (data) {
+                console.log(data);
+                console.log(data.status)
+                console.log(data.amount)
+                console.log(data.tx_ref)
+                console.log(data.transaction_id)
+                    if(data.status == "successful"){
+                        
+                        $('#orders li').each(function(){
+                            var q = $(this)[0].children[0].innerText
+                            var item =$(this)[0].children[1].innerText
+                            console.log(q)
+                            console.log(item)
+                            $.ajax({
+                                type: 'POST',
+                                url: "{% url 'paymentsapp:add_quantity' %}",
+                                data: {
+                                    q_value:q,
+                                    item: item,
+                                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                                },
+                                success:function(response){
+                                    console.log(response.message)
+                                }
+                            });
+                        });
+                        
+                        $.ajax({
+                            type: 'POST',
+                            url: "{% url 'paymentsapp:success' %}",
+                            data: {
+                                firstname: "{{request.user.first_name}}",
+                                lastname: "{{request.user.last_name}}",
+                                othername: "{{payer.othername}}",
+                                username: "{{request.user.username}}",
+                                // password: ",
+                                email: $('#id_email').val(),
+                                country: $('#id_country').val(),
+                                region: $('#id_region').val(),
+                                address: $('#id_address').val(),
+                                postcode: $('#id_postcode').val(),
+                                phone: $('#id_phone').val(),
+                                note: $('#note').val(),
+                                // city: $('#id_city').val(),
+                                account: "no",
+                                paid: data.amount,
+                                transaction_id: data.transaction_id,
+                                tx_ref: data.tx_ref,
+                                total: sum,
+                                items: items,
+                                note: note,
+                                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                            },
+                            success:function(response){
+                                console.log(response.message)
+                                if(response.message == "success"){
+                                    window.location.replace("{% url 'paymentsapp:success_page' %}")
+                                }
+                            }
+                        });
+                    }
+                },
+                onclose: function() {
+                // close modal
+                
+                },
+                customizations: {
+                title: "NASAM GHANA",
+                description: "Payment for items in cart",
+                logo: "https://nasam-app.herokuapp.com/static/img/nslogo.png",
+                },
+            });
+        }
+        makePayment();
+        $('.site-btn').on('click', function(e){
+            e.preventDefault()
+            makePayment();
+        });
     }
-    
     
 </script>
 {% endblock %}

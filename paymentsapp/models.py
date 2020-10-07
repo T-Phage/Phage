@@ -28,5 +28,5 @@ class PayerDetails(models.Model):
     # class Meta:
     #     verbose_name_plural = 'Users'
 
-    # def __str__(self):
-    #     return self.payer
+    def __str__(self):
+        return self.payer.username

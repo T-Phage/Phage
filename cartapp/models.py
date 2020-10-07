@@ -1,19 +1,19 @@
 from django.db import models
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
 from fashionapp.models import Product
 from paymentsapp.models import PayerDetails
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 # Get the user model
-User = get_user_model()
+# User = get_user_model()
 
 
 # Cart Model
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(PayerDetails, on_delete=models.CASCADE)
     item = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=1)
+    quantity = models.IntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

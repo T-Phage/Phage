@@ -1,12 +1,12 @@
 from django.shortcuts import render,redirect
 from paymentsapp.models import PayerDetails
 from adminapp.forms import PayerDetailsForm
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, login, logout
+# from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django.contrib import messages
-
-User = get_user_model()
+from django.contrib.auth.models import User
+# User = get_user_model()
 
 
 # Create your views here.
@@ -37,19 +37,26 @@ def register(request):
         context = {'form':form,}
         return render(request, 'register.html', context)
 
-def login(request):
+def signin(request):
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
         
-        print(username)
-        print(password)
+        user1 = User.objects.filter(username=username)[0]
+        print(user1.is_staff)
+        # print(username)
+        # print(password)
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
             # Redirect to a success page.
             print('logged in')
-            return redirect('fashionapp:index')
+            
+            if user.is_staff is True:
+                return redirect('adminapp:dashboard')
+            else:
+                return redirect('fashionapp:index')
         else:
             # Return an 'invalid login' error message.
             messages.error(request, 'An error occurred')
@@ -57,6 +64,11 @@ def login(request):
             return render(request, 'login.html')
     else:
         return render(request, 'login.html')
+
+
+def signout(request):
+    logout(request)
+    return redirect('fashionapp:index')
 
 
 def validate(request):

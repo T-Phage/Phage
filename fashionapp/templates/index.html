@@ -137,17 +137,6 @@ a:hover{
             num = num+1
             sessionStorage.setItem( "cart_"+num, id)
             
-            // $.ajax({
-            //     type: 'POST',
-            //     url: '/shop-cart/',
-            //     data: {
-            //         id: id,
-            //         csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
-            //     },
-            //     success:function(response){
-                    
-            //     }
-            // });
             cart = {
                 id: id,
                 img: img,
@@ -167,8 +156,10 @@ a:hover{
     }else{
         $(document).on('click', '#btn', function(e){
             e.preventDefault();
+            var label = $(this).parent()
+            console.log(label[0].children[0].children[0].innerText)
             var link = $(this).attr('url')
-            $(this).attr('id', 'gone');
+            // $(this).attr('id', 'gone');
             
             // console.log(link)
             $.ajax({
