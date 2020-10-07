@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'cartapp.apps.CartappConfig',
     'paymentsapp.apps.PaymentsappConfig',
     'adminapp.apps.AdminappConfig',
-    
+    'django_filters',
+    'django_cleanup',
 ]
 
 MIDDLEWARE = [

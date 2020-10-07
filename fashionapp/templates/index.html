@@ -57,7 +57,8 @@ a:hover{
                         <div class="label stockout">out of stock</div>
                         {% endif %}
                         <ul class="product__hover">
-                            <li><a url="media/{{ product.mainimage }}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                            
+                            <li><a href="{{product.mainimage.url}}" class="image-popup"><span class="arrow_expand"></span></a></li>
                             <li><a ><span class="icon_heart_alt"></span></a></li>
                             <li><a ><span class="icon_tag_alt"></span></a></li>
                         </ul>
@@ -71,7 +72,7 @@ a:hover{
                             <i class="fa fa-star"></i>
                             <i class="fa fa-star"></i>
                         </div>
-                        <div class="product__price">GH₵ {{ product.price }}</div> {% csrf_token %}
+                        <div class="product__price">GH₵ {{ product.price }} </div> {% csrf_token %}
                         <a href="" aria-disabled="true" url="cart/{{ product.slug }}" class="cart-btn" {% if product.stock >= 0 %}id="btn" {% else %} id="out" {% endif %}><span class="icon_cart_alt"></span> Add to cart<span style="display: none;">{{product.id}}</span></a>
                     </div>
                 </div>
@@ -159,7 +160,7 @@ a:hover{
             var label = $(this).parent()
             console.log(label[0].children[0].children[0].innerText)
             var link = $(this).attr('url')
-            // $(this).attr('id', 'gone');
+            $(this).attr('id', 'gone');
             
             // console.log(link)
             $.ajax({

@@ -39,7 +39,7 @@
  .alert{
     width: 300px;  
     display: none;
-}/*
+}
 @media (min-width: 576px){
     .modal-dialog {
     max-width: 500px;
@@ -54,7 +54,7 @@
     z-index: 1030;
 }
 .modal-dialog {
-    position: relative;
+    position: fixed;
     width: auto;
     margin: .5rem;
     pointer-events: none;
@@ -68,11 +68,11 @@
     max-width: 500px;
     margin: 1.75rem auto;
     }
-} */
+} 
 
 </style>
 <body>
-    <div style="position: fixed;" class="alert alert-success fixed-top " role="alert">
+    <div style="position: fixed;" class="alert alert-success fixed-top modal-dialog" role="alert">
     
     </div>
     <div style="position: fixed;" class="alert alert-danger fixed-top modal-dialog" role="alert">
@@ -120,7 +120,7 @@
             <div class="row">
                 <div class="col-xl-3 col-lg-2">
                     <div class="header__logo">
-                        <a href="{% url 'fashionapp:index' %}"><img height="80px" width="200px" src="{% static 'img/nsnavlogo.png' %}" alt=""></a>
+                        <a href="{% url 'fashionapp:index' %}"><img height="50px" width="120px" src="{% static 'img/nsnavlogo.png' %}" alt=""></a>
                     </div>
                 </div>
                 <div class="col-xl-6 col-lg-7">
@@ -160,11 +160,11 @@
                                     <div class="tip">0</div>
                                 </a>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <a href=""><span class="icon_bag_alt"></span>
                                     <div class="tip">2</div>
                                 </a>
-                            </li>
+                            </li> -->
                         </ul>
                     </div>
                 </div>

@@ -46,13 +46,18 @@ def remove_from_cart(request, slug):
         if cart.quantity > 1:
             cart.quantity -= 1
             cart.save()
+            data = {
+                'message': "This item was added to cart.",
+                'cart_total': Cart.objects.filter(item=item, user=user[0]).count() 
+            }
+            return JsonResponse(data)
         else:
             cart_qs.delete()
-    data = {
-        'message': "This item was added to cart.",
-        'cart_total': Cart.objects.filter(item=item, user=user[0]).count() 
-    }
-    return JsonResponse(data)
+            data = {
+                'message': "This item was added to cart.",
+                'cart_total': Cart.objects.filter(item=item, user=user[0]).count() 
+            }
+        return JsonResponse(data)
             
 
 # Count cart instances
@@ -60,6 +65,7 @@ def remove_from_cart(request, slug):
 def count_cart(request):
     cart_qs = Cart.objects.filter(user=request.user.id).count()
     cart = cart_qs
+    print(cart)
     data = {
             'message': "This item was added to your orders.",
             'cart_total': cart,
