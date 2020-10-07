@@ -48,7 +48,7 @@ a:hover{
             {% for product in object_list %}
             <div class="col-lg-3 col-md-4 col-sm-6 mix {{ product.category }}">
                 <div class="product__item">
-                    <div class="product__item__pic set-bg" data-setbg="media/{{ product.mainimage }}">
+                    <div class="product__item__pic set-bg" data-setbg="{{ product.mainimage.url }}">
                         {% if product.label == 'new' %}
                         <div class="label new">New</div>
                         {% elif product.label == 'sale' %}
@@ -190,9 +190,9 @@ a:hover{
         e.preventDefault();
         // $('.alert-danger')[0].innerText = response.message;
             // $('a[href="/shop-cart/"] .tip')[0].innerText = response.cart_total
-            $('.alert-danger').show();
+            $('.already').show();
             setTimeout(function() {
-            $('.alert-danger').fadeOut();
+            $('.already').fadeOut();
         }, 3500);
     });
     
