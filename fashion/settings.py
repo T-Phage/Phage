@@ -25,7 +25,7 @@ SECRET_KEY = '0cd26!2$%@-r!5u=%eo$br^cyl=rc%c@84e%7z_)b6=$g823-!'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://nasam-app.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['https://nasam-app.herokuapp.com/', '127.0.0.1']
 
 
 # Application definition
