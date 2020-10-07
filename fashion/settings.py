@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'cartapp.apps.CartappConfig',
     'paymentsapp.apps.PaymentsappConfig',
     'adminapp.apps.AdminappConfig',
+    
 ]
 
 MIDDLEWARE = [
