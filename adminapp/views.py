@@ -18,7 +18,7 @@ def dashboard(request):
     return render(request, 'admin_index.html', context)
 
 
-clas Dashboard(TemplateView):
+class Dashboard(DetailView):
     pass
 
 
