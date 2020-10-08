@@ -44,12 +44,8 @@ def shop(request):
 
 def checkout(request):
     detailform = PayerDetailsForm()
-    # orders = Order.objects.filter(ordered=False, user=request.user)
     carts =  Cart.objects.all()
-    payer = PayerDetails.objects.filter(payer=request.user)[0]
-    print(payer)
-    # total_orders = Order.objects.get(ordered=False, user=request.user)
-    context = {'detailform':detailform, 'carts':carts, 'payer':payer,}
+    context = {'detailform':detailform, 'carts':carts, }
     return render(request, 'checkout.html', context)
 
 

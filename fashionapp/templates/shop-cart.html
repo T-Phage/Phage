@@ -254,7 +254,7 @@ for (var i=1; i<=4; i++){
         
         $(document).on('click', '.checkout', function(e){
             shopCalc()
-            e.preventDefault();
+            // e.preventDefault();
             
              // return;
             
@@ -268,7 +268,7 @@ for (var i=1; i<=4; i++){
             try{
                 $('tbody').append('<tr id="'+cartObj.id+'" cart="'+key+'">\
                                         <td class="cart__product__item">\
-                                            <img src="/'+cartObj.img+'" alt="image">\
+                                            <img src="'+cartObj.img+'" alt="image">\
                                             <div class="cart__product__item__title">\
                                                 <h6>'+cartObj.product+'</h6>\
                                                 <div class="rating">\

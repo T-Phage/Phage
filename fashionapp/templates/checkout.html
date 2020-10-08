@@ -27,6 +27,7 @@
                 </div>
             </div>
             <!-- action="{% url 'paymentsapp:success' %}" -->
+            <h4 style="color: red; display: none;" id="form">Fields can't be null</h4>
             <form method="POST" action="/payments/success/" enctype="multipart/form-data" class="checkout__form">
                 {% csrf_token %}
                 <div class="row">
@@ -55,9 +56,10 @@
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="checkout__form__input">
-                                    <p>Username <span>*</span></p>
+                                <div class="checkout__form__input user">
+                                    <p>Username <span>*</span> <span style="color: red; font-size: 13px; display: none;" id="dis"> This field can't be null when create account is checked </span></p>
                                     <input type="text" id="username">
+                                    
                                 </div>
                             </div>
                             <div class="col-lg-12">
@@ -103,7 +105,7 @@
                                         customer login at the <br />top of the page</p> -->
                                     </div>
                                     <div class="checkout__form__input">
-                                        <p>Account Password <span>*</span></p>
+                                        <p>Account Password <span>*</span> <span style="color: red; font-size: 13px; display: none;" id="pass"> This field can't be null when create account is checked </span> </p>
                                         <input type="password" id="password">
                                     </div>
                                     <div class="checkout__form__checkbox">
@@ -156,10 +158,10 @@
         <!-- Checkout Section End -->
         
 <script>
+
     if ("{{request.user}}" == "AnonymousUser"){
         
         var account = "no";
-        console.log(account)
         
         var cartValue = localStorage.getItem("total");
 
@@ -168,14 +170,16 @@
         
         $('.site-btn').on('click', function(e){
             e.preventDefault()
-            
+            var firstname = $('#id_firstname').val()
+            var lastname = $('#id_lastname').val()
             var othername = $('#id_othername').val()
-            var username = $('#id_firstname').val() +" "+ $('#lastname').val()
+            var username = $('#username').val()
             var email = $('#id_email').val()
             var phone = $('#id_phone').val()
             var country = $('#id_country').val()
             var city = $('#id_city').val()
             var region = $('#id_region').val()
+            var password = $('#password').val()
             var total = $('.checkout__order__total ul li span span')[1].innerText
             var items = localStorage.getItem('arry')
             var form = $('form')
@@ -183,6 +187,29 @@
                 
                 account = "yes";
             }else{account="no"}
+            
+            
+            if(firstname > 0 && lastname > 0 && othername.length > 0 && username > 0 && email > 0 && phone > 0 && country > 0 && city > 0 && 
+            region > 0 && password > 0 && account == 'yes'){
+                makePayment();
+            } else if(firstname > 0 && lastname > 0 && othername.length > 0 && username == 0 && email > 0 && phone > 0 && country > 0 && city > 0 && 
+            region > 0 && password == 0 && account == 'no'){
+                makePayment();
+            }
+            else if(firstname > 0 && lastname > 0 && othername.length > 0 && username == 0 && email > 0 && phone > 0 && country > 0 && city > 0 && 
+            region > 0 && password == 0 && account == 'yes'){
+                $('#dis').show();
+                $('#pass').show();
+                setTimeout(function() {
+                    $('#pass').fadeOut();
+                    $('#dis').fadeOut();
+                }, 3500);
+            }else{
+                $('#form').show();
+                setTimeout(function() {
+                    $('#form').fadeOut();
+                }, 3500);
+            }    
             
             function makePayment() {
                 FlutterwaveCheckout({
@@ -239,7 +266,7 @@
                                     
                                 }catch(e){}
                             }
-                            
+                            // To order table
                             $.ajax({
                                 type: 'POST',
                                 url: "{% url 'paymentsapp:success' %}",
@@ -286,7 +313,7 @@
                     },
                 });
             }
-            makePayment();
+            
         });
      
         var arry = []
@@ -318,8 +345,7 @@
         for (var i=0; i<total_arry.length; i++){
             sum += parseFloat(total_arry[i])
         }
-        // console.log(sum)
-        // console.log("{{request.user.get_full_name}}")
+ 
         $('.checkout__order__total ul li span span')[0].innerText = sum;
         $('.checkout__order__total ul li span span')[1].innerText = sum;
         
@@ -441,5 +467,29 @@
         });
     }
     
+    $('#id_username').on('keyup', function(){
+            var username = $(this).val()
+            
+            $.ajax({
+                type: 'GET',
+                url: "{% url 'accounts:validate' %}",
+                data: {
+                    username: username,
+                },
+                success:function(response){
+                    if (response.is_taken == true){
+                        $('.user').append('<span id="error" style="color:red; font-size:15px;">This username is already taken</span>')
+                        $('.site-btn').on('click', function(){
+                            $(this).attr('type', '')
+                        });
+                    } else{
+                        $('#error').remove()
+                        $('.site-btn').on('click', function(e){
+                            $(this).attr('type', 'submit')
+                        });
+                    }
+                }
+            });
+        });
 </script>
 {% endblock %}
