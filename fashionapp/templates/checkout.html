@@ -189,15 +189,15 @@
             }else{account="no"}
             
             
-            if(firstname > 0 && lastname > 0 && othername.length > 0 && username > 0 && email > 0 && phone > 0 && country > 0 && city > 0 && 
-            region > 0 && password > 0 && account == 'yes'){
+            if(firstname.length > 0 && lastname.length > 0 && username.length > 0 && email.length > 0 && phone.length > 0 && country.length > 0 && city.length > 0 && 
+            region.length > 0 && password.length > 0 && account == 'yes'){
                 makePayment();
-            } else if(firstname > 0 && lastname > 0 && othername.length > 0 && username == 0 && email > 0 && phone > 0 && country > 0 && city > 0 && 
-            region > 0 && password == 0 && account == 'no'){
+            } else if(firstname.length > 0 && lastname.length > 0 && username.length == 0 && email.length > 0 && phone.length > 0 && country.length > 0 && city.length > 0 && 
+            region.length > 0 && password.length == 0 && account == 'no'){
                 makePayment();
             }
-            else if(firstname > 0 && lastname > 0 && othername.length > 0 && username == 0 && email > 0 && phone > 0 && country > 0 && city > 0 && 
-            region > 0 && password == 0 && account == 'yes'){
+            else if(firstname.length > 0 && lastname.length > 0 && username.length == 0 && email.length > 0 && phone.length > 0 && country.length > 0 && city.length > 0 && 
+            region.length > 0 && password.length == 0 && account == 'yes'){
                 $('#dis').show();
                 $('#pass').show();
                 setTimeout(function() {
@@ -467,7 +467,7 @@
         });
     }
     
-    $('#id_username').on('keyup', function(){
+    $('#username').on('keyup', function(){
             var username = $(this).val()
             
             $.ajax({
@@ -485,11 +485,12 @@
                     } else{
                         $('#error').remove()
                         $('.site-btn').on('click', function(e){
-                            $(this).attr('type', 'submit')
+                            // $(this).attr('type', 'submit')
                         });
                     }
                 }
             });
         });
+        console.log($('#username'))
 </script>
 {% endblock %}
