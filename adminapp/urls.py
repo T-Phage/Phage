@@ -6,6 +6,7 @@ app_name = 'adminapp'
 
 urlpatterns = [
     path('', views.dashboard, name='dashboard'),
+    # path('', Dashboard.as_view(), name='dashboard'),
     path('products/', Products.as_view(), name='products'),
     path('orders__table/', views.OrderTable, name='order_table'),
     path('profile/', views.profile, name='profile'),

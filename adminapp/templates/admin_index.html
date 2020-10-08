@@ -25,6 +25,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <h1 class="display-5 mt-1 mb-3">{{orders_not_delivered}}</h1>
                 <div class="mb-0">
                     <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i></span>Orders yet to be deliverd
@@ -170,25 +171,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {% for item in items %}
+                            {% for product in items %}
                             <tr>
                                 <td>
                                     <div class="d-flex align-items-center">
-                                        <div class="m-r-10"><a class="btn btn-circle btn-info text-white text-uppercase">{{item.name|slice:":2"}}</a></div>
+                                        <div class="m-r-10"><a class="btn btn-circle btn-info text-white text-uppercase">{{product.name|slice:":2"}}</a></div>
                                         <div class="">
-                                            <h4 class="m-b-0 font-16">{{item.name}}</h4>
+                                            <h4 class="m-b-0 font-16">{{product.name}}</h4>
                                         </div>
                                     </div>
                                 </td>
-                                <td>GH₵ {{item.price}}</td>
-                                <td>{{item.category}}</td>
+                                <td>GH₵ {{product.price}}</td>
+                                <td>{{product.category}}</td>
                                 <td>
                                     <label class="label label-danger">{{item.size}}</label>
                                 </td>
-                                <td>{{item.quantity}}</td>
-                                <td>{{item.stock}}</td>
+                                <td>{{product.quantity}}</td>
+                                <td>{{product.stock}}</td>
                                 <td>
-                                    <h5 class="m-b-0">$<script>document.write(parseFloat("{{item.price}}") * parseInt("{{item.quantity}}"))</script></h5>
+                                    <h5 class="m-b-0">GH₵ <script>document.write(parseFloat("{{product.price}}") * parseInt("{{product.quantity}}"))</script></h5>
                                 </td>
                             </tr>
                             {% endfor %}

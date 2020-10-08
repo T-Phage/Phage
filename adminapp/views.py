@@ -4,10 +4,11 @@ from fashionapp.models import Product
 from cartapp.models import Order, Orders
 from django.db.models import Sum
 from .forms import ProductForm
+from django.views.generic import TemplateView, DetailView
 
 # Create your views here.
 def dashboard(request):
-    items  = Product.objects.all()
+    items  = Product.objects.all().order_by("-quantity")[:5]
     print(items)
     orders_delivered = Orders.objects.filter(delivered=True).count()
     orders_not_delivered = Orders.objects.filter(delivered=False).count()
@@ -16,10 +17,6 @@ def dashboard(request):
     context = {'orders_delivered':orders_delivered, 'orders_not_delivered':orders_not_delivered,
                'earnings':earnings, 'items':items}
     return render(request, 'admin_index.html', context)
-
-
-class Dashboard(DetailView):
-    pass
 
 
 class Products(ListView):
