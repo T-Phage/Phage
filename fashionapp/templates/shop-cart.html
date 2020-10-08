@@ -311,7 +311,6 @@ for (var i=1; i<=4; i++){
 
             });
             
-            // console.log(num)
             var sum = 0;
     
             for(var i=0; i < num.length; i++){
@@ -319,7 +318,7 @@ for (var i=1; i<=4; i++){
                 sum += parseFloat(num[i]);
     
             }
-            // console.log(sum)
+            
             $('.subtotal span')[0].innerText = "GH₵" + sum
             $('.total span')[0].innerText = "GH₵" + sum
             
@@ -330,7 +329,7 @@ for (var i=1; i<=4; i++){
         
         $(document).on('click', '.dec', function(e){
             e.preventDefault();
-            shopCalc();
+            
             $('tbody tr').each(function(){
                 var price = parseFloat($(this)[0].children[1].children[0].innerText);
                 var quantity = parseInt($(this)[0].children[2].children[0].children[1].value);
@@ -348,16 +347,15 @@ for (var i=1; i<=4; i++){
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
                 },
                 success:function(response){
-                    console.log(response.message)
-                    $('ul .subtotal span')[0].innerText = "$ " + response.price_total
-                    $('ul .total span')[0].innerText = "$ " + response.price_total
+                    // console.log(response.message)
+                    shopCalc();
                 }
             });
         });
         
         $(document).on('click', '.inc', function(e){
             e.preventDefault();
-            shopCalc();
+            
             $('tbody tr').each(function(){
                 var price = parseFloat($(this)[0].children[1].children[0].innerText);
                 var quantity = parseInt($(this)[0].children[2].children[0].children[1].value);
@@ -375,14 +373,15 @@ for (var i=1; i<=4; i++){
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
                 },
                 success:function(response){
-                    console.log(response.message);
+                    // console.log(response.message);
+                    shopCalc();
                 }
             });
         });
         
         $(document).on('click', '.icon_close', function(e){
             e.preventDefault();
-            shopCalc();
+            
             var link = $(this).attr('url');
             var a = $(this).parent();
             var td = a.parent();
@@ -398,9 +397,8 @@ for (var i=1; i<=4; i++){
                     csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
                 },
                 success:function(response){
-                    console.log(response.data);
-                    $('ul .subtotal span')[0].innerText = "$" + response.price_total
-                    $('ul .total span')[0].innerText = "$" + response.price_total
+                    // console.log(response.data);
+                    shopCalc();
                     
                     $('a[href="/shop-cart/"] .tip').each(function(){
                         $(this)[0].innerText = response.cart_total; 
@@ -410,7 +408,6 @@ for (var i=1; i<=4; i++){
         });
     }
     
-    console.log($('.total span')[0].innerText)
     if($('.total span')[0].innerText == "GH₵0"){
         $('.checkout').attr('href', '#')
         // console.log('gh')

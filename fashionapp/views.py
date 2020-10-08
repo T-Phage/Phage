@@ -43,10 +43,15 @@ def shop(request):
 
 
 def checkout(request):
-    detailform = PayerDetailsForm()
-    carts =  Cart.objects.all()
-    context = {'detailform':detailform, 'carts':carts, }
-    return render(request, 'checkout.html', context)
+    if request.user is None:
+        detailform = PayerDetailsForm()
+        return render(request, 'checkout.html', {'detailform':detailform})
+    else:
+        payer = PayerDetails.objects.filter(payer=request.user.id)
+        detailform = PayerDetailsForm()
+        carts =  Cart.objects.all()
+        context = {'detailform':detailform, 'carts':carts, }
+        return render(request, 'checkout.html', context)
 
 
 # from django.shortcuts import render

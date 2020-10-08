@@ -153,6 +153,18 @@ a:hover{
             var cartObj = JSON.parse( cartValue );
             console.log(cartObj)
             // // original object
+            
+            $('.alert-success')[0].innerText = "item addedd to cart";
+            $('a[href="/shop-cart/"] .tip')[0].innerText = sessionStorage.length
+            $('.alert-success').show();
+            setTimeout(function() {
+                $('.alert-success').fadeOut();
+            }, 3500);
+            
+            $('a[href="/shop-cart/"] .tip').each(function(){
+                $(this)[0].innerText = sessionStorage.length
+            });
+    
         });
     }else{
         $(document).on('click', '#btn', function(e){

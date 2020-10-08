@@ -133,7 +133,7 @@
                                     <ul id="orders">
                                         {% for cart in carts %}
                                         {% if cart.user.payer == request.user %}
-                                        <li><span>{{cart.quantity}}</span> <it>{{cart.item}}</it><span>GH₵ <script>document.write(parseInt("{{cart.quantity}}") * parseFloat("{{cart.item.price}}"))</script></span></li>
+                                        <li><a>{{cart.quantity}}</a> <a>{{cart.item}}</a> <span>GH₵ <script>document.write(parseFloat("{{cart.item.price}}") * parseInt("{{cart.quantity}}"))</script></span>  </li>
                                         {% endif %}
                                         {% endfor %}
                                     </ul>
@@ -337,14 +337,15 @@
         $('#orders li').each(function(){
             var str = $(this)[0].children[2].innerText
             var total = str.substring(4)
-            
-            total_arry.push(total)
+            console.log(total)
+            total_arry.push(parseFloat(total))
         });
-        // console.log(total_arry)
+        console.log(total_arry)
         sum = 0;
         for (var i=0; i<total_arry.length; i++){
             sum += parseFloat(total_arry[i])
         }
+        // console.log(sum)
  
         $('.checkout__order__total ul li span span')[0].innerText = sum;
         $('.checkout__order__total ul li span span')[1].innerText = sum;
