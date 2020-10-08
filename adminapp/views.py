@@ -18,6 +18,10 @@ def dashboard(request):
     return render(request, 'admin_index.html', context)
 
 
+clas Dashboard(TemplateView):
+    pass
+
+
 class Products(ListView):
     model = Product
     # paginate_by = 50
