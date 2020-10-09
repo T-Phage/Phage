@@ -5,8 +5,11 @@ from cartapp.models import Order, Orders
 from django.db.models import Sum
 from .forms import ProductForm
 from django.views.generic import TemplateView, DetailView
+from paymentsapp.models import PayerDetails
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+@login_required(login_url='login')
 def dashboard(request):
     items  = Product.objects.all().order_by("-quantity")[:5]
     print(items)
@@ -19,6 +22,7 @@ def dashboard(request):
     return render(request, 'admin_index.html', context)
 
 
+# @login_required(login_url='login')
 class Products(ListView):
     model = Product
     # paginate_by = 50
@@ -30,17 +34,22 @@ class Products(ListView):
 #     model = Orders
 #     template_name = 'ordertable.html'
     
-
+@login_required(login_url='login')
 def OrderTable(request):
     orders = Orders.objects.all()
     context = {'orders':orders}
     return render(request, 'ordertable.html', context)
     
 
+@login_required(login_url='login')
 def profile(request):
-    return render(request, 'adminprofile.html')
+    user = PayerDetails.objects.get(payer=request.user.id)
+    print(user)
+    context = {'user':user}
+    return render(request, 'adminprofile.html', context)
 
 
+@login_required(login_url='login')
 def add_product(request):
     if request.method == 'POST':
         form = ProductForm(request.POST, request.FILES)
@@ -51,6 +60,7 @@ def add_product(request):
     return render(request, 'addproduct.html', context)
 
 
+@login_required(login_url='login')
 def order_detail(request, pk):
     order = Orders.objects.get(id=pk)
     print(order.ordered_by)
