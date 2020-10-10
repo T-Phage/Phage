@@ -107,7 +107,12 @@
             <a href="{% url 'fashionapp:index' %}"><img height="50px" width="120px" src="{% static 'img/nsnavlogo.png' %}" alt="logo"></a>
         </div>
         <div id="mobile-menu-wrap"></div>
-        <div class="offcanvas__auth">
+        <div class="offcanvas__auth" id="unknown">
+            <a href="{% url 'accounts:login' %}">Login</a>
+            <a href="{% url 'accounts:register' %}">Register</a>
+        </div>
+        
+        <div class="offcanvas__auth" id="known">
             <a href="{% url 'accounts:login' %}">Login</a>
             <a href="{% url 'accounts:register' %}">Register</a>
         </div>
