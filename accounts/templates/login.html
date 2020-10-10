@@ -54,5 +54,14 @@
         </div>
     </section>
     
-    <script>console.log('{{request.user}}')</script>
+    <script>console.log('{{request.user}}')
+        console.log(sessionStorage)
+        if(sessionStorage){
+            console.log(arch)
+        }else{
+            $('header').hide()
+            $('footer').hide()
+            $('a').attr('href', '#')
+        }
+    </script>
 {% endblock %}
