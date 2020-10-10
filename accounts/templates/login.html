@@ -56,8 +56,9 @@
     
     <script>console.log('{{request.user}}')
         console.log(sessionStorage)
-        if(sessionStorage){
-            console.log(arch)
+        sessionStorage.setItem('login', 'login')
+        if(sessionStorage.getItem('login')){
+            console.log('arch')
         }else{
             $('header').hide()
             $('footer').hide()

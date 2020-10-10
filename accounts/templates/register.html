@@ -105,14 +105,17 @@
     
     <script>
     
-    if(sessionStorage){
-    console.log(arch)
-    }else{
-        $('header').hide()
-        $('footer').hide()
-        $('a').attr('href', '#')
-    }
-
+    console.log(sessionStorage)
+        sessionStorage.setItem('login', 'login')
+        if(sessionStorage.getItem('login')){
+            console.log('arch')
+        }else{
+            $('header').hide()
+            $('footer').hide()
+            $('a').attr('href', '#')
+        }
+        
+        
         $('#uname').on('keyup', function(){
             var username = $(this).val()
             
