@@ -31,8 +31,8 @@ def register(request):
         PayerDetails.objects.create(payer=user, othername=othername, country=country,
                                     address=address, city=city, region=region, postcode=postcode,
                                     phone=phone)
-        return redirect('fashionapp:index')
-    else:login
+        return redirect('fashionapp:login')
+    else:
         form = PayerDetailsForm()
         context = {'form':form,}
         return render(request, 'register.html', context)
