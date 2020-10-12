@@ -145,12 +145,12 @@
                 <div class="col-lg-3">
                     <div class="header__right">
                         
-                        <div id="unknown" class="header__right__auth">
+                        <div id="unknown" class="header__right__auth unknown">
                             <a href="{% url 'accounts:login' %}">Login</a>
                             <a href="{% url 'accounts:register' %}">Register</a>
                         </div>
                         
-                        <div id="known" class="header__right__auth">
+                        <div id="known" class="header__right__auth known">
                             <a href="{% url 'accounts:logout' %}">Logout</a>
                             <a href="{% url 'adminapp:dashboard' %}">Account</a>
                         </div>
@@ -297,7 +297,7 @@
 <!-- Search End -->
 
 <script>
-    if("{{request.user}}" == "AnonymousUser"){
+    if("{{request.user}}" == "AnonymousUser" || "{{request.user}}" ==""){
         $('#known').hide()
         $('#unknown').show()
     }
