@@ -32,7 +32,7 @@ def register(request):
                                     address=address, city=city, region=region, postcode=postcode,
                                     phone=phone)
         return redirect('fashionapp:index')
-    else:
+    else:login
         form = PayerDetailsForm()
         context = {'form':form,}
         return render(request, 'register.html', context)
@@ -68,7 +68,7 @@ def signin(request):
 
 def signout(request):
     logout(request)
-    return redirect('fashionapp:index')
+    return redirect('fashionapp:login')
 
 
 def validate(request):
