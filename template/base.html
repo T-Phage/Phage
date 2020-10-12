@@ -6,6 +6,8 @@
 {% url 'fashionapp:shop' as shop %}
 {% url 'fashionapp:contact' as contact %}
 {% url 'fashionapp:checkout' as checkout %}
+{% url 'accounts:login' as login %}
+{% url 'accounts:register' as register %}
 <html lang="zxx">
 
 <head>
@@ -120,7 +122,7 @@
     <!-- Offcanvas Menu End -->
     <!-- {% static 'img/logo.png' %} -->
     <!-- Header Section Begin -->
-    <header class="header">
+    <header class="header {% if request.path == login or request.path == register %}login-hd{% endif %}">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-xl-3 col-lg-2">
@@ -207,7 +209,7 @@
     {% endblock %}
     
     <!-- Footer Section Begin -->
-<footer class="footer" >
+<footer class="footer {% if request.path == login or request.path == register %}login-footer{% endif %}">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 col-md-6 col-sm-7">

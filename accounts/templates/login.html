@@ -3,7 +3,7 @@
 {% block login %}
     
       <!-- Breadcrumb Begin -->
-    <div class="breadcrumb-option">
+    <div class="breadcrumb-option login-bc">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -21,8 +21,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="{% url 'accounts:register' %}">Not having an account?</a> Click
-                    here to create one.</h6>
+                    <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="{% url 'accounts:register' %}">Not having an account? Click
+                    here to create one.</a></h6>
                 </div>
             </div>
             {% for message in messages %}
@@ -64,5 +64,6 @@
             $('footer').hide()
             $('a').attr('href', '#')
         }
+        
     </script>
 {% endblock %}

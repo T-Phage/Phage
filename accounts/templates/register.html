@@ -2,7 +2,7 @@
 {% load static %}
 {% block register %}
       <!-- Breadcrumb Begin -->
-      <div class="breadcrumb-option">
+      <div class="breadcrumb-option login-bc">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
@@ -20,8 +20,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="{% url 'accounts:login' %}">Already have an account?</a> Click
-                    here to login.</h6>
+                    <h6 class="coupon__link"><span class="icon_tag_alt"></span> <a href="{% url 'accounts:login' %}">Already have an account? Click
+                    here to login.</a></h6>
                 </div>
             </div>
             <form action="#" method="POST" class="checkout__form">
@@ -104,16 +104,6 @@
     </section>
     
     <script>
-    
-    console.log(sessionStorage)
-        sessionStorage.setItem('login', 'login')
-        if(sessionStorage.getItem('login')){
-            console.log('arch')
-        }else{
-            $('header').hide()
-            $('footer').hide()
-            $('a').attr('href', '#')
-        }
         
         
         $('#uname').on('keyup', function(){
